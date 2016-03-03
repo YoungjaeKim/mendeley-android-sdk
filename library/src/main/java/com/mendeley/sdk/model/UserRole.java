@@ -1,17 +1,19 @@
 package com.mendeley.sdk.model;
 
+import java.util.UUID;
+
 /**
  * Model class representing user role json object.
  *
  */
 public class UserRole {
 
-    public final String profileId;
+    public final UUID profileId;
     public final String joined;
     public final String role;
 
     public UserRole(
-            String profileId,
+            UUID profileId,
             String joined,
             String role) {
         this.profileId = profileId;
@@ -20,7 +22,7 @@ public class UserRole {
     }
 
     public static class Builder {
-        private String profileId;
+        private UUID profileId;
         private String joined;
         private String role;
 
@@ -32,7 +34,7 @@ public class UserRole {
             this.role = from.role;
         }
 
-        public Builder setProfileId(String profileId) {
+        public Builder setProfileId(UUID profileId) {
             this.profileId = profileId;
             return this;
         }

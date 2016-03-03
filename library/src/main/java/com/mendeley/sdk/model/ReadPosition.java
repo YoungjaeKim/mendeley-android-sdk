@@ -1,19 +1,20 @@
 package com.mendeley.sdk.model;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Model of the item that marks the last reading position of a {@link File}
  */
 public class ReadPosition {
 
-    public final String id;
-    public final String fileId;
+    public final UUID id;
+    public final UUID fileId;
     public final int page;
     public final float verticalPosition;
     public final Date date;
 
-    public ReadPosition(String id, String fileId, int page, float verticalPosition, Date date) {
+    public ReadPosition(UUID id, UUID fileId, int page, float verticalPosition, Date date) {
         this.id = id;
         this.fileId = fileId;
         this.page = page;
@@ -26,8 +27,8 @@ public class ReadPosition {
      * Builder for {@link ReadPosition}
      */
     public static class Builder {
-        private String id;
-        private String fileId;
+        private UUID id;
+        private UUID fileId;
         private int page;
         private float verticalPosition;
         private Date date;
@@ -43,12 +44,12 @@ public class ReadPosition {
             this.date = other.date;
         }
 
-        public Builder setId(String id) {
+        public Builder setId(UUID id) {
             this.id = id;
             return this;
         }
 
-        public Builder setFileId(String fileId) {
+        public Builder setFileId(UUID fileId) {
             this.fileId = fileId;
             return this;
         }

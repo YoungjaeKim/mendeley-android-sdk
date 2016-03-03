@@ -2,6 +2,7 @@ package com.mendeley.sdk.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Model class representing employment json object.
@@ -9,7 +10,7 @@ import java.util.List;
  */
 public class Employment {
 
-	public final String id;
+	public final UUID id;
 	public final String institution;
 	public final String position;
 	public final String startDate;
@@ -19,7 +20,7 @@ public class Employment {
 	public final Boolean isMainEmployment;
 
 	private Employment(
-			String id,
+			UUID id,
 			String institution,
 			String position,
 			String startDate,
@@ -39,7 +40,7 @@ public class Employment {
 	}
 
 	public static class Builder {
-		private String id;
+		private UUID id;
 		private String institution;
 		private String position;
 		private String startDate;
@@ -61,7 +62,7 @@ public class Employment {
 			this.isMainEmployment = from.isMainEmployment;
 		}
 
-		public Builder setId(String id) {
+		public Builder setId(UUID id) {
 			this.id = id;
 			return this;
 		}

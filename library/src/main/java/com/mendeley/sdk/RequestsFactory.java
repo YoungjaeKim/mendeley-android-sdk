@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Factory for creating typical {@link Request}s to interact against the Mendeley API.
@@ -44,7 +45,7 @@ public interface RequestsFactory {
      * @param profileId id of the profile to get
      * @return the request
      */
-    Request<Profile> newGetProfileRequest(String profileId);
+    Request<Profile> newGetProfileRequest(UUID profileId);
 
     /**
      * Obtains a {@link Request} to retrieve the list of valid document types. This is, the
@@ -86,7 +87,7 @@ public interface RequestsFactory {
      * @param view used to configure which fields the server will return
      * @return the request
      */
-    Request<Document> newGetDocumentRequest(String documentId, DocumentEndpoint.DocumentRequestParameters.View view);
+    Request<Document> newGetDocumentRequest(UUID documentId, DocumentEndpoint.DocumentRequestParameters.View view);
 
     /**
      * Obtains a {@link Request} to create a new {@link Document} in the user's library.
@@ -105,7 +106,7 @@ public interface RequestsFactory {
      *                 Missing fields are left unchanged (not cleared).
      * @return the request
      */
-    Request<Document> newPatchDocumentRequest(String documentId, Date date, Document document);
+    Request<Document> newPatchDocumentRequest(UUID documentId, Date date, Document document);
 
     /**
      * Obtains a {@link Request} to move an existing document to the trash of the user's library.
@@ -113,7 +114,7 @@ public interface RequestsFactory {
      * @param documentId the id of the document to trash
      * @return the request
      */
-    Request<Void> newTrashDocumentRequest(String documentId);
+    Request<Void> newTrashDocumentRequest(UUID documentId);
 
     /**
      * Obtains a {@link Request} to permanently delete an existing document which is NOT in the trash.
@@ -121,7 +122,7 @@ public interface RequestsFactory {
      * @param documentId the id of the document to delete
      * @return the request
      */
-    Request<Void> newDeleteDocumentRequest(String documentId);
+    Request<Void> newDeleteDocumentRequest(UUID documentId);
 
     /**
      * Obtains a {@link Request} to permanently delete an existing document which is in the trash.
@@ -129,7 +130,7 @@ public interface RequestsFactory {
      * @param documentId the id of the document to delete
      * @return the request
      */
-    Request<Void> newDeleteTrashedDocumentRequest(String documentId);
+    Request<Void> newDeleteTrashedDocumentRequest(UUID documentId);
 
     /**
      * Obtains a {@link Request} to retrieve the list of {@link Document}s in the trash of the
@@ -154,7 +155,7 @@ public interface RequestsFactory {
      *
      * @param documentId id of the document to restore.
      */
-    Request<Void> newRestoreTrashedDocumentRequest(String documentId);
+    Request<Void> newRestoreTrashedDocumentRequest(UUID documentId);
 
     /**
      * Obtains a {@link Request} to get a list of the @{link File}s in the user's library.
@@ -182,7 +183,7 @@ public interface RequestsFactory {
      * @param targetFile the {@link File} in the file system where the data will be saved to
      * @return the request
      */
-    FilesEndpoint.GetFileBinaryRequest newGetFileBinaryRequest(String fileId, java.io.File targetFile);
+    FilesEndpoint.GetFileBinaryRequest newGetFileBinaryRequest(UUID fileId, java.io.File targetFile);
 
     /**
      *
@@ -195,7 +196,7 @@ public interface RequestsFactory {
      * @param fileName the name of the file.
      * @return the request
      */
-    Request<File> newPostFileWithBinaryRequest(String contentType, String documentId, InputStream inputStream, String fileName);
+    Request<File> newPostFileWithBinaryRequest(String contentType, UUID documentId, InputStream inputStream, String fileName);
 
     /**
      * Obtains a {@link Request} to delete the {@link File} with the passed id.
@@ -203,7 +204,7 @@ public interface RequestsFactory {
      * @param fileId the id of the file to delete
      * @return the request
      */
-    Request<Void> newDeleteFileRequest(String fileId);
+    Request<Void> newDeleteFileRequest(UUID fileId);
 
     /**
      * Obtains a {@link Request} to get the list of {@link Folder}s in the user's library.
@@ -228,7 +229,7 @@ public interface RequestsFactory {
      * @param folderId the id of the folder
      * @return the request
      */
-    Request<Folder> newGetFolderRequest(String folderId);
+    Request<Folder> newGetFolderRequest(UUID folderId);
 
     /**
      * Obtains a {@link Request} to create a new {@link Folder} in the user's library.
@@ -246,7 +247,7 @@ public interface RequestsFactory {
      *                 Missing fields are left unchanged (not cleared).
      * @return the request
      */
-    Request<Folder> newPatchFolderRequest(String folderId, Folder folder);
+    Request<Folder> newPatchFolderRequest(UUID folderId, Folder folder);
 
     /**
      * Obtains a {@link Request} to permanently delete an existing {@link Folder}
@@ -254,7 +255,7 @@ public interface RequestsFactory {
      * @param folderId the id of the document to delete
      * @return the request
      */
-    Request<Void> newDeleteFolderRequest(String folderId);
+    Request<Void> newDeleteFolderRequest(UUID folderId);
 
     /**
      * Obtains a {@link Request} to retrieve the content of one specific {@link Folder} in the form
@@ -264,7 +265,7 @@ public interface RequestsFactory {
      * @param folderId the id of the folder to query
      * @return the request
      */
-    Request<List<String>> newGetFolderDocumentsRequest(FoldersEndpoint.FolderRequestParameters parameters, String folderId);
+    Request<List<UUID>> newGetFolderDocumentsRequest(FoldersEndpoint.FolderRequestParameters parameters, UUID folderId);
 
     /**
      * Obtains a {@link Request} to retrieve the content of one specific {@link Folder} in the form
@@ -274,7 +275,7 @@ public interface RequestsFactory {
      *            May be the {@link Request.Response#next} field of a previous request.
      * @return the request
      */
-    Request<List<String>> newGetFolderDocumentsRequest(Uri uri);
+    Request<List<UUID>> newGetFolderDocumentsRequest(Uri uri);
 
     /**
      * Obtains a {@link Request} to insert one document into one folder.
@@ -283,7 +284,7 @@ public interface RequestsFactory {
      * @param documentId the id of the document to be added to the folder.
      * @return the request
      */
-    Request<Void> newPostDocumentToFolderRequest(String folderId, String documentId);
+    Request<Void> newPostDocumentToFolderRequest(UUID folderId, UUID documentId);
 
     /**
      * Obtains a {@link Request} to delete one document from one folder.
@@ -294,7 +295,7 @@ public interface RequestsFactory {
      * @param documentId the id of the document
      * @return the request
      */
-    Request<Void> newDeleteDocumentFromFolderRequest(String folderId, String documentId);
+    Request<Void> newDeleteDocumentFromFolderRequest(UUID folderId, UUID documentId);
 
     /**
      * Obtains a {@link Request} to retrieve the list of {@link Group}s in the user library.
@@ -318,7 +319,7 @@ public interface RequestsFactory {
      *
      * @param groupId the id of the group to retrieve
      */
-    Request<Group> newGetGroupRequest(String groupId);
+    Request<Group> newGetGroupRequest(UUID groupId);
 
     /**
      * Obtains a {@link Request} to retrieve the list of the members in one specific {@link Group}
@@ -327,7 +328,7 @@ public interface RequestsFactory {
      * @param groupId the id of the group whose members are being retrieved
      * @return the request
      */
-    Request<List<UserRole>> newGetGroupMembersRequest(GroupsEndpoint.GroupRequestParameters parameters, String groupId);
+    Request<List<UserRole>> newGetGroupMembersRequest(GroupsEndpoint.GroupRequestParameters parameters, UUID groupId);
 
     /**
      * Obtains a {@link Request} to retrieve the list of the members in one specific {@link Group}
@@ -361,7 +362,7 @@ public interface RequestsFactory {
      * @param annotationId the id of the annotation to get
      * @return the request
      */
-    Request<Annotation> newGetAnnotationRequest(String annotationId);
+    Request<Annotation> newGetAnnotationRequest(UUID annotationId);
 
     /**
      * Obtains a {@link Request} to create a new {@link Annotation} in the user's library.
@@ -379,7 +380,7 @@ public interface RequestsFactory {
      *                 Missing fields are left unchanged (not cleared).
      * @return the request
      */
-    Request<Annotation> newPatchAnnotationRequest(String annotationId, Annotation annotation);
+    Request<Annotation> newPatchAnnotationRequest(UUID annotationId, Annotation annotation);
 
     /**
      * Obtains a {@link Request} to delete the {@link Annotation} with the passed id.
@@ -387,7 +388,7 @@ public interface RequestsFactory {
      * @param annotationId the id of the annotation to delete
      * @return the request
      */
-    Request<Void> newDeleteAnnotationRequest(String annotationId);
+    Request<Void> newDeleteAnnotationRequest(UUID annotationId);
 
     /**
      * Obtains a {@link Request} to retrieve the last {@link ReadPosition}s for some files
@@ -399,7 +400,7 @@ public interface RequestsFactory {
      * @param limit maximum number of entries to get
      * @return the request
      */
-    Request<List<ReadPosition>> newGetRecentlyReadRequest(String groupId, String fileId, int limit);
+    Request<List<ReadPosition>> newGetRecentlyReadRequest(UUID groupId, UUID fileId, int limit);
 
     /**
      * Obtains a {@link Request} to post the new {@link ReadPosition}.

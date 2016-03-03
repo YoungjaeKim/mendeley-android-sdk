@@ -7,6 +7,7 @@ import com.mendeley.sdk.util.NullableList;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 public class Annotation {
     public enum Type {
@@ -44,32 +45,32 @@ public class Annotation {
         }
     }
 
-    public final String id;
+    public final UUID id;
     public final Type type;
-    public final String previousId;
+    public final UUID previousId;
     public final Integer color;
     public final String text;
-    public final String profileId;
+    public final UUID profileId;
     public final NullableList<Position> positions;
     public final Date created;
     public final Date lastModified;
     public final PrivacyLevel privacyLevel;
     public final String fileHash;
-    public final String documentId;
+    public final UUID documentId;
 
     private Annotation(
-            String id,
+            UUID id,
             Type type,
-            String previousId,
+            UUID previousId,
             Integer color,
             String text,
-            String profileId,
+            UUID profileId,
             List<Position> positions,
             Date created,
             Date lastModified,
             PrivacyLevel privacyLevel,
             String fileHash,
-            String documentId) {
+            UUID documentId) {
         this.id = id;
         this.type = type;
         this.previousId = previousId;
@@ -123,18 +124,18 @@ public class Annotation {
     }
 
     public static class Builder {
-        private String id;
+        private UUID id;
         private Type type;
-        private String previousId;
+        private UUID previousId;
         private Integer color;
         private String text;
-        private String profileId;
+        private UUID profileId;
         private List<Position> positions;
         private Date created;
         private Date lastModified;
         private PrivacyLevel privacyLevel;
         private String fileHash;
-        private String documentId;
+        private UUID documentId;
 
         public Builder() {
         }
@@ -154,7 +155,7 @@ public class Annotation {
             this.documentId = from.documentId;
         }
 
-        public Builder setId(String id) {
+        public Builder setId(UUID id) {
             this.id = id;
             return this;
         }
@@ -164,7 +165,7 @@ public class Annotation {
             return this;
         }
 
-        public Builder setPreviousId(String previousId) {
+        public Builder setPreviousId(UUID previousId) {
             this.previousId = previousId;
             return this;
         }
@@ -179,7 +180,7 @@ public class Annotation {
             return this;
         }
 
-        public Builder setProfileId(String profileId) {
+        public Builder setProfileId(UUID profileId) {
             this.profileId = profileId;
             return this;
         }
@@ -209,7 +210,7 @@ public class Annotation {
             return this;
         }
 
-        public Builder setDocumentId(String documentId) {
+        public Builder setDocumentId(UUID documentId) {
             this.documentId = documentId;
             return this;
         }

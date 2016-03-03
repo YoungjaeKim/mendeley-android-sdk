@@ -4,9 +4,9 @@ import android.net.Uri;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.test.suitebuilder.annotation.SmallTest;
 
+import com.mendeley.sdk.Request;
 import com.mendeley.sdk.model.Document;
 import com.mendeley.sdk.model.Folder;
-import com.mendeley.sdk.Request;
 import com.mendeley.sdk.request.SignedInTest;
 import com.mendeley.sdk.testUtils.AssertUtils;
 
@@ -17,6 +17,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import static com.mendeley.sdk.Request.MENDELEY_API_BASE_URL;
 
@@ -24,9 +25,9 @@ public class FolderRequestTest extends SignedInTest {
 
     @SmallTest
     public void test_GetFoldersRequest_usesCorrectUrl_withParameters() throws Exception {
-        final String groupId = "test-group_id";
+        final UUID groupId = UUID.fromString("97096000-0001-0000-0000-000000000000");
 
-        final Uri expectedUrl = Uri.parse(MENDELEY_API_BASE_URL).buildUpon().appendPath("folders").appendQueryParameter("group_id", groupId).build();
+        final Uri expectedUrl = Uri.parse(MENDELEY_API_BASE_URL).buildUpon().appendPath("folders").appendQueryParameter("group_id", groupId.toString()).build();
 
         FoldersEndpoint.FolderRequestParameters params = new FoldersEndpoint.FolderRequestParameters();
         params.groupId = groupId;
@@ -157,9 +158,9 @@ public class FolderRequestTest extends SignedInTest {
 
     @SmallTest
     public void test_DeleteFolderUrl_usesrightUrl() throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        final String folderId = "theFolderId";
+        final UUID folderId = UUID.fromString("201de700-0001-0000-0000-000000000000");
 
-        final Uri expectedUrl = Uri.parse(MENDELEY_API_BASE_URL).buildUpon().appendPath("folders").appendPath(folderId).build();
+        final Uri expectedUrl = Uri.parse(MENDELEY_API_BASE_URL).buildUpon().appendPath("folders").appendPath(folderId.toString()).build();
         final Uri url = getRequestFactory().newDeleteFolderRequest(folderId).getUrl();
 
         assertEquals("Delete folder url is wrong", expectedUrl, url);
@@ -176,7 +177,7 @@ public class FolderRequestTest extends SignedInTest {
         }
 
         // WHEN deleting one of them
-        final String deletingFolderId = serverFoldersBefore.get(0).id;
+        final UUID deletingFolderId = serverFoldersBefore.get(0).id;
         getRequestFactory().newDeleteFolderRequest(deletingFolderId).run();
 
         // THEN the server does not have the deleted folder any more
@@ -188,9 +189,9 @@ public class FolderRequestTest extends SignedInTest {
 
     @SmallTest
     public void test_patchFolder_usesTheRightUrl() throws Exception {
-        final String folderId = "theFolderId";
+        final UUID folderId = UUID.fromString("201de700-0001-0000-0000-000000000000");
 
-        final Uri expectedUrl = Uri.parse(MENDELEY_API_BASE_URL).buildUpon().appendPath("folders").appendPath(folderId).build();
+        final Uri expectedUrl = Uri.parse(MENDELEY_API_BASE_URL).buildUpon().appendPath("folders").appendPath(folderId.toString()).build();
         final Uri actualUrl = getRequestFactory().newPatchFolderRequest(folderId, null).getUrl();
 
         assertEquals("Patch folder url is wrong", expectedUrl, actualUrl);
@@ -217,15 +218,15 @@ public class FolderRequestTest extends SignedInTest {
 
     @SmallTest
     public void test_getDocumentsInFolder_usesTheCorrectUrl() throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        final String folderId = "theFolderId";
-        final String groupdId = "theGroupId";
+        final UUID folderId = UUID.fromString("201de700-0001-0000-0000-000000000000");
+        final UUID groupdId = UUID.fromString("97096000-0001-0000-0000-000000000000");
         final int limit = 69;
 
         final Uri expectedUrl = Uri.parse(Request.MENDELEY_API_BASE_URL).buildUpon()
                 .appendPath("folders")
-                .appendPath(folderId)
+                .appendPath(folderId.toString())
                 .appendPath("documents")
-                .appendQueryParameter("group_id", groupdId)
+                .appendQueryParameter("group_id", groupdId.toString())
                 .appendQueryParameter("limit", String.valueOf(limit))
                 .build();
 
@@ -244,7 +245,7 @@ public class FolderRequestTest extends SignedInTest {
         final Folder folder = getTestAccountSetupUtils().setupFolder(createParentFolder());
 
         // AND documents in that folder
-        final List<String> expectedDocIds = new LinkedList<String>();
+        final List<UUID> expectedDocIds = new LinkedList<>();
 
         for (int i = 0; i < 4; i++) {
             Document document = getTestAccountSetupUtils().setupDocument(createDocument("doc title" + i));
@@ -253,15 +254,15 @@ public class FolderRequestTest extends SignedInTest {
         }
 
         // WHEN getting the documents in the folder
-        final List<String> actualDocIds = getRequestFactory().newGetFolderDocumentsRequest(null, folder.id).run().resource;
+        final List<UUID> actualDocIds = getRequestFactory().newGetFolderDocumentsRequest(null, folder.id).run().resource;
 
-        Request<List<String>>.Response response = getRequestFactory().newGetFolderDocumentsRequest(new FoldersEndpoint.FolderRequestParameters(), folder.id).run();
-        final Set<String> actualDeletedDocIds = new HashSet<String>(response.resource);
+        Request<List<UUID>>.Response response = getRequestFactory().newGetFolderDocumentsRequest(new FoldersEndpoint.FolderRequestParameters(), folder.id).run();
+        final Set<UUID> actualDeletedDocIds = new HashSet<>(response.resource);
 
         // THEN we have received the documents in that folder
-        Comparator<String> comparator = new Comparator<String>() {
+        Comparator<UUID> comparator = new Comparator<UUID>() {
             @Override
-            public int compare(String lhs, String rhs) {
+            public int compare(UUID lhs, UUID rhs) {
                 return lhs.compareTo(rhs);
             }
         };
@@ -270,10 +271,10 @@ public class FolderRequestTest extends SignedInTest {
 
     @SmallTest
     public void test_postDocumentsToFolder_usesCorrectUrl() throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        final String folderId = "theFolderId";
+        final UUID folderId = UUID.fromString("201de700-0001-0000-0000-000000000000");
 
-        final Uri expectedUrl = Uri.parse(Request.MENDELEY_API_BASE_URL).buildUpon().appendPath("folders").appendPath(folderId).appendPath("documents").build();
-        final Uri actualUrl = getRequestFactory().newPostDocumentToFolderRequest(folderId, "theDocumentId").getUrl();
+        final Uri expectedUrl = Uri.parse(Request.MENDELEY_API_BASE_URL).buildUpon().appendPath("folders").appendPath(folderId.toString()).appendPath("documents").build();
+        final Uri actualUrl = getRequestFactory().newPostDocumentToFolderRequest(folderId, UUID.fromString("d0c94e67-0001-0000-0000-000000000000")).getUrl();
 
         assertEquals("Post document to folder url is wrong", expectedUrl, actualUrl);
     }
@@ -286,7 +287,7 @@ public class FolderRequestTest extends SignedInTest {
 
         // AND documents
         List<Document> documents = new LinkedList<Document>();
-        final Set<String> expectedDocIds = new HashSet<String>();
+        final Set<UUID> expectedDocIds = new HashSet<>();
         for (int i = 0; i < 4; i++) {
             Document document = getTestAccountSetupUtils().setupDocument(createDocument("doc title" + i));
             documents.add(document);
@@ -298,12 +299,12 @@ public class FolderRequestTest extends SignedInTest {
             getRequestFactory().newPostDocumentToFolderRequest(folder.id, document.id).run();
         }
 
-        Request<List<String>>.Response response = getRequestFactory().newGetFolderDocumentsRequest(new FoldersEndpoint.FolderRequestParameters(), folder.id).run();
-        final Set<String> actualDocIds = new HashSet<String>(response.resource);
+        Request<List<UUID>>.Response response = getRequestFactory().newGetFolderDocumentsRequest(new FoldersEndpoint.FolderRequestParameters(), folder.id).run();
+        final Set<UUID> actualDocIds = new HashSet<>(response.resource);
 
-        Comparator<String> comparator = new Comparator<String>() {
+        Comparator<UUID> comparator = new Comparator<UUID>() {
             @Override
-            public int compare(String lhs, String rhs) {
+            public int compare(UUID lhs, UUID rhs) {
                 return lhs.compareTo(rhs);
             }
         };
@@ -312,10 +313,13 @@ public class FolderRequestTest extends SignedInTest {
 
     @SmallTest
     public void test_getDeleteDocumentFromFolder_usesTheCorrectUrl() throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        final String folderId = "theFolderId";
-        final String documentId = "test-document_id";
+        final UUID folderId = UUID.fromString("201de700-0001-0000-0000-000000000000");
+        final UUID documentId = UUID.fromString("d0c94e67-0001-0000-0000-000000000000");
 
-        final Uri expectedUrl = Uri.parse(MENDELEY_API_BASE_URL).buildUpon().appendPath("folders").appendPath(folderId).appendPath("documents").appendPath(documentId).build();
+        final Uri expectedUrl = Uri.parse(MENDELEY_API_BASE_URL).buildUpon().
+                appendPath("folders").appendPath(folderId.toString()).
+                appendPath("documents").appendPath(documentId.toString()).
+                build();
         final Uri actualUrl = getRequestFactory().newDeleteDocumentFromFolderRequest(folderId, documentId).getUrl();
 
         assertEquals("Delete document from folder url is wrong", expectedUrl, actualUrl);
@@ -328,7 +332,7 @@ public class FolderRequestTest extends SignedInTest {
 
         // AND documents in it
         List<Document> documents = new LinkedList<Document>();
-        final Set<String> expectedDocIds = new HashSet<String>();
+        final Set<UUID> expectedDocIds = new HashSet<>();
         for (int i = 0; i < 4; i++) {
             Document document = getTestAccountSetupUtils().setupDocument(createDocument("doc title" + i));
             documents.add(document);
@@ -337,18 +341,18 @@ public class FolderRequestTest extends SignedInTest {
         }
 
         // WHEN deleting one of the documents
-        final String deletingDocumentId = documents.remove(getRandom().nextInt(documents.size() -1)).id;
+        final UUID deletingDocumentId = documents.remove(getRandom().nextInt(documents.size() -1)).id;
         expectedDocIds.remove(deletingDocumentId);
 
         getRequestFactory().newDeleteDocumentFromFolderRequest(folder.id, deletingDocumentId).run();
 
         // THEN the server has no longer that document in the folder
-        Request<List<String>>.Response response = getRequestFactory().newGetFolderDocumentsRequest(new FoldersEndpoint.FolderRequestParameters(), folder.id).run();
-        final Set<String> actualDocIds = new HashSet<String>(response.resource);
+        Request<List<UUID>>.Response response = getRequestFactory().newGetFolderDocumentsRequest(new FoldersEndpoint.FolderRequestParameters(), folder.id).run();
+        final Set<UUID> actualDocIds = new HashSet<>(response.resource);
 
-        Comparator<String> comparator = new Comparator<String>() {
+        Comparator<UUID> comparator = new Comparator<UUID>() {
             @Override
-            public int compare(String lhs, String rhs) {
+            public int compare(UUID lhs, UUID rhs) {
                 return lhs.compareTo(rhs);
             }
         };
@@ -357,9 +361,9 @@ public class FolderRequestTest extends SignedInTest {
 
     @SmallTest
     public void test_GetFolderRequest_usesCorrectUrl() throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        final String folderId = "folderId";
+        final UUID folderId = UUID.fromString("201de700-0001-0000-0000-000000000000");
 
-        final Uri expectedUrl = Uri.parse(Request.MENDELEY_API_BASE_URL).buildUpon().appendPath("folders").appendPath(folderId).build();
+        final Uri expectedUrl = Uri.parse(Request.MENDELEY_API_BASE_URL).buildUpon().appendPath("folders").appendPath(folderId.toString()).build();
         final Uri actualUrl = getRequestFactory().newGetFolderRequest(folderId).getUrl();
 
         assertEquals("Get folder url is wrong", expectedUrl, actualUrl);
@@ -370,7 +374,7 @@ public class FolderRequestTest extends SignedInTest {
 
         // GIVEN a folder that has been posted
         final Folder postingFolder = createParentFolder();
-        final String folderId = getTestAccountSetupUtils().setupFolder(postingFolder).id;
+        final UUID folderId = getTestAccountSetupUtils().setupFolder(postingFolder).id;
 
         // WHEN getting that folder
         final Folder actualFolder =  getRequestFactory().newGetFolderRequest(folderId).run().resource;
@@ -387,7 +391,7 @@ public class FolderRequestTest extends SignedInTest {
         return folder;
     }
 
-    private Folder createSubFolder(String parentFolderId) {
+    private Folder createSubFolder(UUID parentFolderId) {
         Folder folder = new Folder.Builder()
                 .setName("sub folder" + getRandom().nextInt())
                 .setParentId(parentFolderId)

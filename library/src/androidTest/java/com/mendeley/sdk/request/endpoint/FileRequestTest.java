@@ -17,21 +17,22 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 public class FileRequestTest extends SignedInTest {
 
     @SmallTest
     public void test_getFiles_usesRightUrl() throws Exception {
 
-        String documentId = "test-document_id";
-        String groupId = "test-group_id";
+        UUID documentId = UUID.fromString("d0c94e67-0001-0000-0000-000000000000");
+        UUID groupId = UUID.fromString("97096000-0001-0000-0000-000000000000");
         Date addedSince = DateUtils.parseMendeleyApiTimestamp("2014-02-28T11:52:30.000Z");
         Date deletedSince = DateUtils.parseMendeleyApiTimestamp("2014-01-21T11:52:30.000Z");
 
         Uri expectedUrl = Uri.parse(Request.MENDELEY_API_BASE_URL).buildUpon().
                 appendPath("files").
-                appendQueryParameter("document_id", documentId).
-                appendQueryParameter("group_id", groupId).
+                appendQueryParameter("document_id", documentId.toString()).
+                appendQueryParameter("group_id", groupId.toString()).
                 appendQueryParameter("added_since", DateUtils.formatMendeleyApiTimestamp(addedSince)).
                 appendQueryParameter("deleted_since", DateUtils.formatMendeleyApiTimestamp(deletedSince)).
                 build();
@@ -55,10 +56,10 @@ public class FileRequestTest extends SignedInTest {
 
     @SmallTest
     public void test_getFile_usesRightUrl() throws Exception {
-        final String fileId = "test-file_id";
+        final UUID fileId = UUID.fromString("211e0000-0001-0000-0000-000000000000");
         Uri expectedUrl = Uri.parse(Request.MENDELEY_API_BASE_URL).buildUpon().
                 appendPath("files").
-                appendPath(fileId).
+                appendPath(fileId.toString()).
                 build();
         Uri url = getRequestFactory().newGetFileBinaryRequest(fileId, null).getUrl();
 
@@ -67,10 +68,10 @@ public class FileRequestTest extends SignedInTest {
 
     @SmallTest
     public void test_getDeletedFile_usesRightUrl() throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        final String fileId = "test-file_id";
+        final UUID fileId = UUID.fromString("211e0000-0001-0000-0000-000000000000");
         Uri expectedUrl = Uri.parse(Request.MENDELEY_API_BASE_URL).buildUpon().
                 appendPath("files").
-                appendPath(fileId).
+                appendPath(fileId.toString()).
                 build();
         Uri url = getRequestFactory().newDeleteFileRequest(fileId).getUrl();
 
@@ -235,7 +236,7 @@ public class FileRequestTest extends SignedInTest {
         }
 
         // WHEN deleting one of them
-        final String deletingFileId = serverFilesBefore.get(0).id;
+        final UUID deletingFileId = serverFilesBefore.get(0).id;
         getRequestFactory().newDeleteFileRequest(deletingFileId).run();;
 
         // THEN the server does not have the deleted file any more
@@ -257,7 +258,7 @@ public class FileRequestTest extends SignedInTest {
         return doc;
     }
 
-    private File createFile(String documentId) {
+    private File createFile(UUID documentId) {
         final File file = new File.Builder()
                 .setDocumentId(documentId)
                 .setMimeType("application/pdf")

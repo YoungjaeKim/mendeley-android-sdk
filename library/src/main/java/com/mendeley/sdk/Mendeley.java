@@ -38,6 +38,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Class exposing all the pubic functionality of the Mendeley SDK.
@@ -270,11 +271,11 @@ public class Mendeley {
 
         @Override
         public Request<Profile> newGetMyProfileRequest() {
-            return new ProfilesEndpoint.GetProfileRequest("me", authTokenManager, appCredentials);
+            return new ProfilesEndpoint.GetProfileRequest(authTokenManager, appCredentials);
         }
 
         @Override
-        public Request<Profile> newGetProfileRequest(final String profileId) {
+        public Request<Profile> newGetProfileRequest(final UUID profileId) {
             return new ProfilesEndpoint.GetProfileRequest(profileId, authTokenManager, appCredentials);
         }
 
@@ -299,7 +300,7 @@ public class Mendeley {
         }
 
         @Override
-        public Request<Document> newGetDocumentRequest(String documentId, DocumentEndpoint.DocumentRequestParameters.View view) {
+        public Request<Document> newGetDocumentRequest(UUID documentId, DocumentEndpoint.DocumentRequestParameters.View view) {
             return new DocumentEndpoint.GetDocumentRequest(documentId, view, authTokenManager, appCredentials);
         }
 
@@ -309,22 +310,22 @@ public class Mendeley {
         }
 
         @Override
-        public Request<Document> newPatchDocumentRequest(String documentId, Date date, Document document) {
+        public Request<Document> newPatchDocumentRequest(UUID documentId, Date date, Document document) {
             return new DocumentEndpoint.PatchDocumentAuthorizedRequest(documentId, document, date, authTokenManager, appCredentials);
         }
 
         @Override
-        public Request<Void> newTrashDocumentRequest(String documentId) {
+        public Request<Void> newTrashDocumentRequest(UUID documentId) {
             return new DocumentEndpoint.TrashDocumentRequest(documentId, authTokenManager, appCredentials);
         }
 
         @Override
-        public Request<Void> newDeleteDocumentRequest(String documentId) {
+        public Request<Void> newDeleteDocumentRequest(UUID documentId) {
             return new DocumentEndpoint.DeleteDocumentRequest(documentId, authTokenManager, appCredentials);
         }
 
         @Override
-        public Request<Void> newDeleteTrashedDocumentRequest(String documentId) {
+        public Request<Void> newDeleteTrashedDocumentRequest(UUID documentId) {
             return new TrashEndpoint.DeleteTrashedDocumentRequest(documentId, authTokenManager, appCredentials);
         }
 
@@ -339,7 +340,7 @@ public class Mendeley {
         }
 
         @Override
-        public Request<Void> newRestoreTrashedDocumentRequest(String documentId) {
+        public Request<Void> newRestoreTrashedDocumentRequest(UUID documentId) {
             return new TrashEndpoint.RestoreTrashedDocumentRequest(documentId, authTokenManager, appCredentials);
         }
 
@@ -354,7 +355,7 @@ public class Mendeley {
         }
 
         @Override
-        public Request<Annotation> newGetAnnotationRequest(String annotationId) {
+        public Request<Annotation> newGetAnnotationRequest(UUID annotationId) {
             return new AnnotationsEndpoint.GetAnnotationRequest(annotationId, authTokenManager, appCredentials);
         }
 
@@ -364,12 +365,12 @@ public class Mendeley {
         }
 
         @Override
-        public Request<Annotation> newPatchAnnotationRequest(String annotationId, Annotation annotation) {
+        public Request<Annotation> newPatchAnnotationRequest(UUID annotationId, Annotation annotation) {
             return new AnnotationsEndpoint.PatchAnnotationRequest(annotationId, annotation, authTokenManager, appCredentials);
         }
 
         @Override
-        public Request<Void> newDeleteAnnotationRequest(String annotationId) {
+        public Request<Void> newDeleteAnnotationRequest(UUID annotationId) {
             return new AnnotationsEndpoint.DeleteAnnotationRequest(annotationId, authTokenManager, appCredentials);
         }
 
@@ -384,17 +385,17 @@ public class Mendeley {
         }
 
         @Override
-        public FilesEndpoint.GetFileBinaryRequest newGetFileBinaryRequest(String fileId, java.io.File targetFile) {
+        public FilesEndpoint.GetFileBinaryRequest newGetFileBinaryRequest(UUID fileId, java.io.File targetFile) {
             return new FilesEndpoint.GetFileBinaryRequest(fileId, targetFile, authTokenManager, appCredentials);
         }
 
         @Override
-        public Request<File> newPostFileWithBinaryRequest(String contentType, String documentId, InputStream inputStream, String fileName) {
+        public Request<File> newPostFileWithBinaryRequest(String contentType, UUID documentId, InputStream inputStream, String fileName) {
             return new FilesEndpoint.PostFileWithBinaryRequest(contentType, documentId, fileName, inputStream, authTokenManager, appCredentials);
         }
 
         @Override
-        public Request<Void> newDeleteFileRequest(String fileId) {
+        public Request<Void> newDeleteFileRequest(UUID fileId) {
             return new FilesEndpoint.DeleteFileRequest(fileId, authTokenManager, appCredentials);
         }
 
@@ -409,7 +410,7 @@ public class Mendeley {
         }
 
         @Override
-        public Request<Folder> newGetFolderRequest(String folderId) {
+        public Request<Folder> newGetFolderRequest(UUID folderId) {
             return new FoldersEndpoint.GetFolderRequest(folderId, authTokenManager, appCredentials);
         }
 
@@ -419,33 +420,33 @@ public class Mendeley {
         }
 
         @Override
-        public Request<Folder> newPatchFolderRequest(String folderId, Folder folder) {
+        public Request<Folder> newPatchFolderRequest(UUID folderId, Folder folder) {
             return new FoldersEndpoint.PatchFolderAuthorizedRequest(folderId, folder, authTokenManager, appCredentials);
         }
 
 
         @Override
-        public Request<Void> newDeleteFolderRequest(String folderId) {
+        public Request<Void> newDeleteFolderRequest(UUID folderId) {
             return new FoldersEndpoint.DeleteFolderRequest(folderId, authTokenManager, appCredentials);
         }
 
         @Override
-        public Request<List<String>> newGetFolderDocumentsRequest(FoldersEndpoint.FolderRequestParameters parameters, String folderId) {
+        public Request<List<UUID>> newGetFolderDocumentsRequest(FoldersEndpoint.FolderRequestParameters parameters, UUID folderId) {
             return new FoldersEndpoint.GetFolderDocumentIdsRequest(parameters, folderId, authTokenManager, appCredentials);
         }
 
         @Override
-        public Request<List<String>> newGetFolderDocumentsRequest(Uri uri) {
+        public Request<List<UUID>> newGetFolderDocumentsRequest(Uri uri) {
             return new FoldersEndpoint.GetFolderDocumentIdsRequest(uri, authTokenManager, appCredentials);
         }
 
         @Override
-        public Request<Void> newPostDocumentToFolderRequest(String folderId, String documentId) {
+        public Request<Void> newPostDocumentToFolderRequest(UUID folderId, UUID documentId) {
             return new FoldersEndpoint.PostDocumentToFolderRequest(folderId, documentId, authTokenManager, appCredentials);
         }
 
         @Override
-        public Request<Void> newDeleteDocumentFromFolderRequest(String folderId, String documentId) {
+        public Request<Void> newDeleteDocumentFromFolderRequest(UUID folderId, UUID documentId) {
             return new FoldersEndpoint.DeleteDocumentFromFolder(folderId, documentId, authTokenManager, appCredentials);
         }
 
@@ -460,12 +461,12 @@ public class Mendeley {
         }
 
         @Override
-        public Request<Group> newGetGroupRequest(String groupId) {
+        public Request<Group> newGetGroupRequest(UUID groupId) {
             return new GroupsEndpoint.GetGroupRequest(groupId, authTokenManager, appCredentials);
         }
 
         @Override
-        public Request<List<UserRole>> newGetGroupMembersRequest(GroupsEndpoint.GroupRequestParameters parameters, String groupId) {
+        public Request<List<UserRole>> newGetGroupMembersRequest(GroupsEndpoint.GroupRequestParameters parameters, UUID groupId) {
             return new GroupsEndpoint.GetGroupMembersRequest(parameters, groupId, authTokenManager, appCredentials);
         }
 
@@ -476,7 +477,7 @@ public class Mendeley {
         }
 
         @Override
-        public Request<List<ReadPosition>> newGetRecentlyReadRequest(String groupId, String fileId, int limit) {
+        public Request<List<ReadPosition>> newGetRecentlyReadRequest(UUID groupId, UUID fileId, int limit) {
             return new RecentlyReadEndpoint.GetRecentlyReadRequest(groupId, fileId, limit, authTokenManager, appCredentials);
         }
 

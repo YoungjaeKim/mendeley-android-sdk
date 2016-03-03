@@ -19,19 +19,21 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 public class RecentlyReadRequestTest extends SignedInTest {
 
     @SmallTest
     public void test_getRecentlyRead_usesRightUrl() throws Exception {
-        final String groupId = "groupId" + getRandom().nextInt();
-        final String fileId = "theGroupId" + getRandom().nextInt();
+
+        final UUID groupId = UUID.fromString("97096000-0001-0000-0000-000000000000");
+        final UUID fileId = UUID.fromString("211e0000-0001-0000-0000-000000000000");
         final int limit =  getRandom().nextInt();
 
         final Uri expectedUrl = Uri.parse(Request.MENDELEY_API_BASE_URL).buildUpon()
                 .appendPath("recently_read")
-                .appendQueryParameter("group_id", groupId)
-                .appendQueryParameter("file_id", fileId)
+                .appendQueryParameter("group_id", groupId.toString())
+                .appendQueryParameter("file_id", fileId.toString())
                 .appendQueryParameter("limit", String.valueOf(limit))
                 .build();
 
@@ -118,7 +120,7 @@ public class RecentlyReadRequestTest extends SignedInTest {
     }
 
     private ReadPosition setupRecentlyReadEntryAndDependancies() throws Exception {
-        final String fileId = setupDocumentAndFile().id;
+        final UUID fileId = setupDocumentAndFile().id;
 
         // create recently read position
         int page = getRandom().nextInt();
@@ -135,7 +137,7 @@ public class RecentlyReadRequestTest extends SignedInTest {
                 setSource("source" + getRandom().nextInt()).
                 build();
 
-        final String docId = getTestAccountSetupUtils().setupDocument(doc).id;
+        final UUID docId = getTestAccountSetupUtils().setupDocument(doc).id;
 
         // create file
         final InputStream inputStream = getContext().getAssets().open("android.pdf");

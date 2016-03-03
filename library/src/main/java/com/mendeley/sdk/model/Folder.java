@@ -1,18 +1,19 @@
 package com.mendeley.sdk.model;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Model class representing folder json object.
  */
 public class Folder {
 	public final String name;
-	public final String id;
-	public final String parentId;
-	public final String groupId;
+	public final UUID id;
+	public final UUID parentId;
+	public final UUID groupId;
 	public final Date added;
 	
-	private Folder(String name, String id, String parentId, String groupId, Date added) {
+	private Folder(String name, UUID id, UUID parentId, UUID groupId, Date added) {
         this.name = name;
         this.id = id;
         this.parentId = parentId;
@@ -22,9 +23,9 @@ public class Folder {
 	
 	public static class Builder {
         private String name;
-        private String id;
-        private String parentId;
-        private String groupId;
+        private UUID id;
+        private UUID parentId;
+        private UUID groupId;
         private Date added;
 
         public Builder() {
@@ -43,17 +44,17 @@ public class Folder {
             return this;
         }
 
-        public Builder setId(String id) {
+        public Builder setId(UUID id) {
             this.id = id;
             return this;
         }
 
-        public Builder setParentId(String parentId) {
+        public Builder setParentId(UUID parentId) {
             this.parentId = parentId;
             return this;
         }
 
-        public Builder setGroupId(String groupId) {
+        public Builder setGroupId(UUID groupId) {
             this.groupId = groupId;
             return this;
         }

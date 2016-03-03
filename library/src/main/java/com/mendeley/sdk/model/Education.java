@@ -1,11 +1,13 @@
 package com.mendeley.sdk.model;
 
+import java.util.UUID;
+
 /**
  * Model class representing education json object.
  */
 public class Education {
 	
-	public final String id;
+	public final UUID id;
 	public final String institution;
 	public final String degree;
 	public final String startDate;
@@ -13,7 +15,7 @@ public class Education {
 	public final String website;
 
 	private Education(
-			String id,
+			UUID id,
 			String institution,
 			String degree,
 			String startDate,
@@ -28,7 +30,7 @@ public class Education {
 	}
 	
 	public static class Builder {
-		private String id;
+		private UUID id;
 		private String institution;
 		private String degree;
 		private String startDate;
@@ -46,7 +48,7 @@ public class Education {
 			this.website = from.website;
 		}
 
-		public Builder setId(String id) {
+		public Builder setId(UUID id) {
 			this.id = id;
 			return this;
 		}

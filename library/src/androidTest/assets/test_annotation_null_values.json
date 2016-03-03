@@ -1,10 +1,10 @@
 {
-    "id": "test-id",
+    "id": "a6607a71-0001-0000-0000-000000000000",
     "text": "test-text",
-    "profile_id": "test-profile-id",
+    "profile_id": "670211e0-0001-0000-0000-000000000000",
     "created": "2014-02-20T16:53:25.000Z",
     "last_modified": "2015-02-20T16:53:25.000Z",
     "filehash": "test-hash",
-    "document_id": "test-doc-id",
-    "previous_id": "test-prev-id"
+    "document_id": "d0c94e67-0001-0000-0000-000000000000",
+    "previous_id": "67e91095-0001-0000-0000-000000000000"
 }

@@ -24,6 +24,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -63,19 +64,19 @@ public class DocumentEndpoint {
 
     public static class GetDocumentRequest extends GetAuthorizedRequest<Document> {
 
-        private static Uri getGetDocumentUrl(String documentId, DocumentRequestParameters.View view) {
+        private static Uri getGetDocumentUrl(UUID documentId, DocumentRequestParameters.View view) {
             StringBuilder url = new StringBuilder();
             url.append(DOCUMENTS_BASE_URL);
             url.append("/").append(documentId);
 
             if (view != null) {
-                url.append("?").append("view=" + view);
+                url.append("?").append("view=").append(view);
             }
 
             return Uri.parse(url.toString());
         }
 
-        public GetDocumentRequest(String documentId, DocumentRequestParameters.View view, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
+        public GetDocumentRequest(UUID documentId, DocumentRequestParameters.View view, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
             super(getGetDocumentUrl(documentId, view), authTokenManager, appCredentials);
         }
 
@@ -121,7 +122,7 @@ public class DocumentEndpoint {
 
         private final Document document;
 
-        public PatchDocumentAuthorizedRequest(String documentId, Document document, Date date, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
+        public PatchDocumentAuthorizedRequest(UUID documentId, Document document, Date date, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
             super(Uri.parse(DOCUMENTS_BASE_URL + "/" + documentId), date, authTokenManager, appCredentials);
             this.document = document;
         }
@@ -140,7 +141,7 @@ public class DocumentEndpoint {
     }
 
     public static class TrashDocumentRequest extends PostAuthorizedRequest<Void> {
-        public TrashDocumentRequest(String documentId,  AuthTokenManager authTokenManager, AppCredentials appCredentials) {
+        public TrashDocumentRequest(UUID documentId,  AuthTokenManager authTokenManager, AppCredentials appCredentials) {
             super(Uri.parse(DOCUMENTS_BASE_URL + "/" + documentId + "/trash"), authTokenManager, appCredentials);
         }
 
@@ -157,7 +158,7 @@ public class DocumentEndpoint {
 
     public static class DeleteDocumentRequest extends DeleteAuthorizedRequest<Void> {
 
-        public DeleteDocumentRequest(String documentId,  AuthTokenManager authTokenManager, AppCredentials appCredentials) {
+        public DeleteDocumentRequest(UUID documentId,  AuthTokenManager authTokenManager, AppCredentials appCredentials) {
             super(Uri.parse(DOCUMENTS_BASE_URL + "/" + documentId), authTokenManager, appCredentials);
         }
     }
@@ -176,7 +177,7 @@ public class DocumentEndpoint {
         /**
          * Group ID. If not supplied, returns user documents.
          */
-        public String groupId;
+        public UUID groupId;
 
         /**
          * Returns only documents modified since this timestamp. Should be supplied in ISO 8601 format.
@@ -211,7 +212,7 @@ public class DocumentEndpoint {
                 bld.appendQueryParameter("view", view.getValue());
             }
             if (groupId != null) {
-                bld.appendQueryParameter("group_id", groupId);
+                bld.appendQueryParameter("group_id", groupId.toString());
             }
             if (modifiedSince != null) {
                 bld.appendQueryParameter("modified_since", DateUtils.formatMendeleyApiTimestamp(modifiedSince));

@@ -21,6 +21,7 @@ import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -61,14 +62,14 @@ public class TrashEndpoint {
     }
 
     public static class DeleteTrashedDocumentRequest extends DeleteAuthorizedRequest<Void> {
-        public DeleteTrashedDocumentRequest(String documentId,  AuthTokenManager authTokenManager, AppCredentials appCredentials) {
-            super(Uri.parse(BASE_URL).buildUpon().appendPath(documentId).build(), authTokenManager, appCredentials);
+        public DeleteTrashedDocumentRequest(UUID documentId,  AuthTokenManager authTokenManager, AppCredentials appCredentials) {
+            super(Uri.parse(BASE_URL).buildUpon().appendPath(documentId.toString()).build(), authTokenManager, appCredentials);
         }
     }
 
     public static class RestoreTrashedDocumentRequest extends PostAuthorizedRequest<Void> {
-        public RestoreTrashedDocumentRequest(String documentId, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
-            super(Uri.parse(BASE_URL).buildUpon().appendPath(documentId).appendPath("restore").build(), authTokenManager, appCredentials);
+        public RestoreTrashedDocumentRequest(UUID documentId, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
+            super(Uri.parse(BASE_URL).buildUpon().appendPath(documentId.toString()).appendPath("restore").build(), authTokenManager, appCredentials);
         }
 
         @Override

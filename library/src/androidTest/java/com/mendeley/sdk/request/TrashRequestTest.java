@@ -12,6 +12,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 public class TrashRequestTest extends SignedInTest {
 
@@ -20,7 +21,7 @@ public class TrashRequestTest extends SignedInTest {
         final List<Document> serverDocsBefore = setUpDocumentsInServer(4);
 
         // WHEN trashing one of them
-        final String trashingDocId = serverDocsBefore.get(0).id;
+        final UUID trashingDocId = serverDocsBefore.get(0).id;
         getRequestFactory().newTrashDocumentRequest(trashingDocId).run();
 
         // THEN the server does not list the document as non trashed documents

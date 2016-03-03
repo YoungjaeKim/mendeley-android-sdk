@@ -20,6 +20,7 @@ import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static com.mendeley.sdk.Request.MENDELEY_API_BASE_URL;
 
@@ -62,7 +63,7 @@ public class GroupsEndpoint {
     }
 
     public static class GetGroupRequest extends GetAuthorizedRequest<Group> {
-        public GetGroupRequest(String groupId, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
+        public GetGroupRequest(UUID groupId, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
             super(Uri.parse(GROUP_BASE_URL + "/" + groupId), authTokenManager, appCredentials);
         }
 
@@ -79,7 +80,7 @@ public class GroupsEndpoint {
     }
 
     public static class GetGroupMembersRequest extends GetAuthorizedRequest<List<UserRole>> {
-        private static Uri getGetGroupMembersUrl(GroupRequestParameters params, String groupId) {
+        private static Uri getGetGroupMembersUrl(GroupRequestParameters params, UUID groupId) {
             final Uri.Builder bld = Uri.parse(GROUP_BASE_URL + "/" + groupId + "/members").buildUpon();
             if (params == null) {
                 return bld.build();
@@ -91,7 +92,7 @@ public class GroupsEndpoint {
             super(url, authTokenManager, appCredentials);
         }
 
-        public GetGroupMembersRequest(GroupRequestParameters parameters, String groupId, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
+        public GetGroupMembersRequest(GroupRequestParameters parameters, UUID groupId, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
             this(getGetGroupMembersUrl(parameters, groupId), authTokenManager, appCredentials);
         }
 

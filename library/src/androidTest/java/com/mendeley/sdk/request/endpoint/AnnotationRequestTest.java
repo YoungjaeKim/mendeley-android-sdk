@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 public class AnnotationRequestTest extends SignedInTest {
 
@@ -136,7 +137,7 @@ public class AnnotationRequestTest extends SignedInTest {
         final List<Annotation> serverAnnotationsBefore = setUpAnnotationsInServer(postedDocument.id, 5);
 
         // WHEN deleting one of them
-        final String deletingAnnotationId = serverAnnotationsBefore.get(0).id;
+        final UUID deletingAnnotationId = serverAnnotationsBefore.get(0).id;
         getRequestFactory().newDeleteAnnotationRequest(deletingAnnotationId).run();
 
         // THEN the server does not have the deleted annotation any more
@@ -168,7 +169,7 @@ public class AnnotationRequestTest extends SignedInTest {
         AssertUtils.assertAnnotation(annotationPatched, annotationAfter);
     }
 
-    private Annotation createAnnotation(String docId) {
+    private Annotation createAnnotation(UUID docId) {
         final Annotation annotation = new Annotation.Builder()
                 .setDocumentId(docId)
                 .setText("text " + getRandom().nextInt())
@@ -191,7 +192,7 @@ public class AnnotationRequestTest extends SignedInTest {
         return doc;
     }
 
-    private List<Annotation> setUpAnnotationsInServer(String docId, int annotationCount) throws Exception {
+    private List<Annotation> setUpAnnotationsInServer(UUID docId, int annotationCount) throws Exception {
         final List<Annotation> annotations = new LinkedList<Annotation>();
         for (int i = 0; i < annotationCount; i++) {
             final Annotation annotation = createAnnotation(docId);

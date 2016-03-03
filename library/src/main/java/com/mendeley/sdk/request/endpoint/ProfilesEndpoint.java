@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.util.Map;
+import java.util.UUID;
 
 import static com.mendeley.sdk.Request.MENDELEY_API_BASE_URL;
 
@@ -32,7 +33,12 @@ public class ProfilesEndpoint {
     }
 
     public static class GetProfileRequest extends GetAuthorizedRequest<Profile> {
-        public GetProfileRequest(String profileId, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
+
+        public GetProfileRequest(AuthTokenManager authTokenManager, AppCredentials appCredentials) {
+            super(Uri.parse(ProfilesEndpoint.PROFILES_URL + "me"), authTokenManager, appCredentials);
+        }
+
+        public GetProfileRequest(UUID profileId, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
             super(Uri.parse(ProfilesEndpoint.PROFILES_URL + profileId), authTokenManager, appCredentials);
         }
 
@@ -47,5 +53,4 @@ public class ProfilesEndpoint {
             headers.put("Content-type", "application/vnd.mendeley-profiles.1+json");
         }
     }
-
 }

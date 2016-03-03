@@ -20,6 +20,7 @@ import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -36,16 +37,16 @@ public class RecentlyReadEndpoint {
 
 
     public static class GetRecentlyReadRequest extends GetAuthorizedRequest<List<ReadPosition>> {
-        private static Uri getGetRecentlyReadUrl(String groupId, String fileId, int limit) {
+        private static Uri getGetRecentlyReadUrl(UUID groupId, UUID fileId, int limit) {
             final Uri.Builder bld = Uri.parse(RECENTLY_READ_BASE_URL).buildUpon();
 
             // groupId
             if (groupId != null) {
-                bld.appendQueryParameter("group_id", groupId);
+                bld.appendQueryParameter("group_id", groupId.toString());
             }
             // fileId
             if (fileId != null) {
-                bld.appendQueryParameter("file_id", fileId);
+                bld.appendQueryParameter("file_id", fileId.toString());
             }
             // limit
             bld.appendQueryParameter("limit", String.valueOf(limit));
@@ -53,7 +54,7 @@ public class RecentlyReadEndpoint {
             return bld.build();
         }
 
-        public GetRecentlyReadRequest(String groupId, String fileId, int limit, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
+        public GetRecentlyReadRequest(UUID groupId, UUID fileId, int limit, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
             super(getGetRecentlyReadUrl(groupId, fileId, limit), authTokenManager, appCredentials);
         }
 
@@ -93,5 +94,4 @@ public class RecentlyReadEndpoint {
         }
 
     }
-
 }

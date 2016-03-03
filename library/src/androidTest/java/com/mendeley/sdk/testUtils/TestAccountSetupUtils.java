@@ -30,6 +30,7 @@ import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -103,7 +104,7 @@ public class TestAccountSetupUtils{
         return requestFactory.newPostDocumentRequest(doc).run().resource;
     }
 
-    public void trashDocument(String docId) throws MendeleyException {
+    public void trashDocument(UUID docId) throws MendeleyException {
         // FIXME: do not delegate into the requestFactory to this, because we are testing the requestFactory this should receive a JSON and post it using HTTP
        requestFactory.newTrashDocumentRequest(docId).run();
     }
@@ -113,7 +114,7 @@ public class TestAccountSetupUtils{
         return requestFactory.newPostAnnotationRequest(annotation).run().resource;
     }
 
-    public File setupFile(String docId, String fileName, InputStream inputStream) throws MendeleyException {
+    public File setupFile(UUID docId, String fileName, InputStream inputStream) throws MendeleyException {
         // FIXME: do not delegate into the requestFactory to this, because we are testing the requestFactory this should receive a JSON and post it using HTTP
         return requestFactory.newPostFileWithBinaryRequest("application/pdf", docId, inputStream, fileName).run().resource;
     }
@@ -129,7 +130,7 @@ public class TestAccountSetupUtils{
     }
 
 
-    public ReadPosition setupReadingPosition(String fileId, int page, int verticalPosition, Date date) throws Exception{
+    public ReadPosition setupReadingPosition(UUID fileId, int page, int verticalPosition, Date date) throws Exception{
         HttpsURLConnection con = null;
         OutputStream os = null;
         BufferedWriter writer = null;

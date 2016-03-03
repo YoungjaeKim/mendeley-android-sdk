@@ -3,6 +3,7 @@ package com.mendeley.sdk.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Model class representing profile json object.
@@ -10,7 +11,7 @@ import java.util.List;
  */
 public class Profile {
 
-	public final String id;
+	public final UUID id;
 	public final String displayName;
 	public final String userType;
 	public final String url;
@@ -30,7 +31,7 @@ public class Profile {
 	public final List<Employment> employment;
 	
 	public Profile(
-			String id,
+			UUID id,
 			String displayName,
 			String userType,
 			String url,
@@ -98,7 +99,7 @@ public class Profile {
 	} 
 	
 	public static class Builder {
-		private String id;
+		private UUID id;
 		private String displayName;
 		private String userType;
 		private String url;
@@ -136,7 +137,7 @@ public class Profile {
 			this.employment = from.employment==null?new ArrayList<Employment>():from.employment;
 		}
 		
-		public Builder setId(String id) {
+		public Builder setId(UUID id) {
 			this.id = id;
 			return this;
 		}

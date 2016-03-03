@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Model class representing document json object.
@@ -16,14 +17,14 @@ import java.util.Map;
 public class Document {
 		
 	public final Date lastModified;
-	public final String groupId;
-	public final String profileId;
+	public final UUID groupId;
+	public final UUID profileId;
 	public final Boolean read;
 	public final Boolean starred;
 	public final Boolean authored;
 	public final Boolean confirmed;
 	public final Boolean hidden;
-	public final String id;
+	public final UUID id;
 	public final String type;
 	public final Integer month;
 	public final Integer year;
@@ -50,20 +51,17 @@ public class Document {
     public final NullableList<String> keywords;
     public final NullableList<String> websites;
     public final String clientData;
-    public final String uniqueId;
-	
-	final static String ET_EL = "et. al";
-		
+
 	private Document(
 			Date lastModified,
-			String groupId,
-			String profileId,
+			UUID groupId,
+			UUID profileId,
 			Boolean read,
 			Boolean starred,
 			Boolean authored,
 			Boolean confirmed,
 			Boolean hidden,
-			String id,
+			UUID id,
 			String type,
 			Integer month,
 			Integer year,
@@ -89,8 +87,7 @@ public class Document {
             Boolean fileAttached,
             List<String> keywords,
             List<String> websites,
-            String clientData,
-            String uniqueId) {
+            String clientData) {
 		this.lastModified = lastModified;
 		this.groupId = groupId;
 		this.profileId = profileId;
@@ -126,7 +123,6 @@ public class Document {
         this.keywords = new NullableList<String>(keywords);
         this.websites = new NullableList<String>(websites);
         this.clientData = clientData;
-        this.uniqueId = uniqueId;
 	}
 
 	public static class Builder {
@@ -134,14 +130,14 @@ public class Document {
         private String type;
 
 		private Date lastModified;
-		private String groupId;
-		private String profileId;
+		private UUID groupId;
+		private UUID profileId;
 		private Boolean read;
 		private Boolean starred;
 		private Boolean authored;
 		private Boolean confirmed;
 		private Boolean hidden;
-		private String id;
+		private UUID id;
 		private Integer month;
 		private Integer year;
 		private Integer day;	
@@ -166,7 +162,6 @@ public class Document {
         private List<String> keywords;
         private List<String> websites;
         private String clientData;
-        private String uniqueId;
 		
 		public Builder() {
         }
@@ -207,7 +202,6 @@ public class Document {
             this.keywords = from.keywords==null?new ArrayList<String>():from.keywords;
             this.websites = from.websites==null?new ArrayList<String>():from.websites;
             this.clientData = from.clientData;
-            this.uniqueId = from.uniqueId;
 		}
 
         public Builder setTitle(String title) {
@@ -225,12 +219,12 @@ public class Document {
 			return this;
 		}
 		
-		public Builder setGroupId(String groupId) {
+		public Builder setGroupId(UUID groupId) {
 			this.groupId = groupId;
 			return this;
 		}
 		
-		public Builder setProfileId(String profileId) {
+		public Builder setProfileId(UUID profileId) {
 			this.profileId = profileId;
 			return this;
 		}
@@ -260,7 +254,7 @@ public class Document {
 			return this;
 		}
 		
-		public Builder setId(String id) {
+		public Builder setId(UUID id) {
 			this.id = id;
 			return this;
 		}
@@ -386,11 +380,6 @@ public class Document {
             return this;
         }
 
-        public Builder setUniqueId(String uniqueId) {
-            this.uniqueId = uniqueId;
-            return this;
-        }
-
 		public Document build() {
 			return new Document(
 					lastModified,
@@ -427,8 +416,7 @@ public class Document {
                     fileAttached,
                     keywords,
                     websites,
-                    clientData,
-                    uniqueId);
+                    clientData);
 		}
 	}
 

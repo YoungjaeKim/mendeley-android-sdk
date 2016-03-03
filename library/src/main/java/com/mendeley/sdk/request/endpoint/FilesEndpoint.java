@@ -25,6 +25,7 @@ import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -77,10 +78,10 @@ public class FilesEndpoint {
         private static String filesUrl = MENDELEY_API_BASE_URL + "files";
 
         private static final String PARTIALLY_DOWNLOADED_EXTENSION = ".part";
-        private final String fileId;
+        private final UUID fileId;
         private final java.io.File targetFile;
 
-        public GetFileBinaryRequest(String fileId, java.io.File targetFile, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
+        public GetFileBinaryRequest(UUID fileId, java.io.File targetFile, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
             super(Uri.parse(filesUrl + "/" + fileId), authTokenManager, appCredentials);
             this.fileId = fileId;
             this.targetFile = targetFile;
@@ -102,26 +103,26 @@ public class FilesEndpoint {
             }
 
             if (!tempFile.renameTo(targetFile)) {
-                throw new FileDownloadException("Cannot rename downloaded file", fileId);
+                throw new FileDownloadException("Cannot rename downloaded file", fileId.toString());
             } else {
                 return total;
             }
         }
 
-        public String getFileId() {
+        public UUID getFileId() {
             return fileId;
         }
     }
 
     public static class PostFileWithBinaryRequest extends PostAuthorizedRequest<File> {
         private final String contentType;
-        private final String documentId;
+        private final UUID documentId;
         private final String fileName;
         private final InputStream inputStream;
 
         private static String filesUrl = MENDELEY_API_BASE_URL + "files";
 
-        public PostFileWithBinaryRequest(String contentType, String documentId, String fileName, InputStream inputStream, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
+        public PostFileWithBinaryRequest(String contentType, UUID documentId, String fileName, InputStream inputStream, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
             super(Uri.parse(filesUrl), authTokenManager, appCredentials);
             this.contentType = contentType;
             this.documentId = documentId;
@@ -152,11 +153,10 @@ public class FilesEndpoint {
             final JsonReader reader = new JsonReader(new InputStreamReader(is));
             return JsonParser.fileFromJson(reader);
         }
-
     }
 
     public static class DeleteFileRequest extends DeleteAuthorizedRequest<Void> {
-        public DeleteFileRequest(String fileId, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
+        public DeleteFileRequest(UUID fileId, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
             super(Uri.parse(FILES_BASE_URL + "/" + fileId), authTokenManager, appCredentials);
         }
     }
@@ -171,12 +171,12 @@ public class FilesEndpoint {
         /**
          * The document ID.
          */
-        public String documentId;
+        public UUID documentId;
 
         /**
          * The group ID.
          */
-        public String groupId;
+        public UUID groupId;
 
         /**
          * Returns only files added since this timestamp. Should be supplied in ISO 8601 format.
@@ -196,17 +196,17 @@ public class FilesEndpoint {
         /**
          * The catalog ID.
          */
-        public String catalogId;
+        public UUID catalogId;
 
 
         Uri appendToUi(Uri uri) {
             final Uri.Builder bld = uri.buildUpon();
 
             if (documentId != null) {
-                bld.appendQueryParameter("document_id", documentId);
+                bld.appendQueryParameter("document_id", documentId.toString());
             }
             if (groupId != null) {
-                bld.appendQueryParameter("group_id", groupId);
+                bld.appendQueryParameter("group_id", groupId.toString());
             }
             if (addedSince != null) {
                 bld.appendQueryParameter("added_since", DateUtils.formatMendeleyApiTimestamp(addedSince));
@@ -218,12 +218,9 @@ public class FilesEndpoint {
                 bld.appendQueryParameter("limit", String.valueOf(limit));
             }
             if (catalogId != null) {
-                bld.appendQueryParameter("catalog_id", catalogId);
+                bld.appendQueryParameter("catalog_id", catalogId.toString());
             }
             return bld.build();
         }
     }
-
-
-
 }

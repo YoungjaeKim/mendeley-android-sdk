@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static com.mendeley.sdk.model.Annotation.PrivacyLevel;
 
@@ -47,7 +48,7 @@ public class JsonParser {
 
             final String key = reader.nextName();
             if (key.equals("id")) {
-                builder.setId(reader.nextString());
+                builder.setId(UUID.fromString(reader.nextString()));
 
             } else if (key.equals("display_name")) {
                 builder.setDisplayName(reader.nextString());
@@ -134,10 +135,10 @@ public class JsonParser {
                 bld.setLastModified(DateUtils.parseMendeleyApiTimestamp(reader.nextString()));
 
             } else if (key.equals("group_id")) {
-                bld.setGroupId(reader.nextString());
+                bld.setGroupId(UUID.fromString(reader.nextString()));
 
             } else if (key.equals("profile_id")) {
-                bld.setProfileId(reader.nextString());
+                bld.setProfileId(UUID.fromString(reader.nextString()));
 
             } else if (key.equals("read")) {
                 bld.setRead(reader.nextBoolean());
@@ -155,7 +156,7 @@ public class JsonParser {
                 bld.setHidden(reader.nextBoolean());
 
             } else if (key.equals("id")) {
-                bld.setId(reader.nextString());
+                bld.setId(UUID.fromString(reader.nextString()));
 
             } else if (key.equals("month")) {
                 bld.setMonth(reader.nextInt());
@@ -208,10 +209,7 @@ public class JsonParser {
             } else if (key.equals("client_data")) {
                 bld.setClientData(reader.nextString());
 
-            } else if (key.equals("unique_id")) {
-                bld.setUniqueId(reader.nextString());
-
-            } else if (key.equals("authors")) {
+            }  else if (key.equals("authors")) {
                 bld.setAuthors(personsFromJson(reader));
 
             } else if (key.equals("editors")) {
@@ -332,19 +330,18 @@ public class JsonParser {
         jDocument.put("chapter", document.chapter);
         jDocument.put("file_attached", document.fileAttached);
         jDocument.put("client_data", document.clientData);
-        jDocument.put("unique_id", document.uniqueId);
 
         return jDocument;
     }
 
-    public static JSONObject documentIdToJson(String documentId) throws JSONException {
+    public static JSONObject documentIdToJson(UUID documentId) throws JSONException {
         JSONObject jDocument = new JSONObject();
-        jDocument.put("id", documentId);
+        jDocument.put("id", documentId.toString());
         return jDocument;
     }
 
-    public static List<String> documentsIdsFromJson(JsonReader reader) throws JSONException, IOException {
-        final List<String> documentIds = new ArrayList<>();
+    public static List<UUID> documentsIdsFromJson(JsonReader reader) throws JSONException, IOException {
+        final List<UUID> documentIds = new ArrayList<>();
 
         reader.beginArray();
         while (reader.hasNext()) {
@@ -355,8 +352,8 @@ public class JsonParser {
         return documentIds;
     }
 
-    public static String documentIdFromJson(JsonReader reader) throws JSONException, IOException {
-        String id = null;
+    public static UUID documentIdFromJson(JsonReader reader) throws JSONException, IOException {
+        UUID id = null;
 
         reader.beginObject();
 
@@ -364,7 +361,7 @@ public class JsonParser {
 
             final String key = reader.nextName();
             if (key.equals("id")) {
-                id = reader.nextString();
+                id = UUID.fromString(reader.nextString());
             } else {
                 reader.skipValue();
             }
@@ -399,10 +396,10 @@ public class JsonParser {
 
             String key = reader.nextName();
             if (key.equals("id")) {
-                builder.setId(reader.nextString());
+                builder.setId(UUID.fromString(reader.nextString()));
 
             } else if (key.equals("document_id")) {
-                builder.setDocumentId(reader.nextString());
+                builder.setDocumentId(UUID.fromString(reader.nextString()));
 
             } else if (key.equals("mime_type")) {
                 builder.setMimeType(reader.nextString());
@@ -447,11 +444,11 @@ public class JsonParser {
             if (key.equals("name")) {
                 bld.setName(reader.nextString());
             } else if (key.equals("parent_id")) {
-                bld.setParentId(reader.nextString());
+                bld.setParentId(UUID.fromString(reader.nextString()));
             } else if (key.equals("id")) {
-                bld.setId(reader.nextString());
+                bld.setId(UUID.fromString(reader.nextString()));
             } else if (key.equals("group_id")) {
-                bld.setGroupId(reader.nextString());
+                bld.setGroupId(UUID.fromString(reader.nextString()));
             } else if (key.equals("added")) {
                 bld.setAdded(DateUtils.parseMendeleyApiTimestamp(reader.nextString()));
             } else {
@@ -467,9 +464,9 @@ public class JsonParser {
         JSONObject jFolder = new JSONObject();
 
         jFolder.put("name", folder.name);
-        jFolder.put("parent_id", folder.parentId);
+        jFolder.put("parent_id", folder.parentId == null? null : folder.parentId.toString());
         jFolder.put("id", folder.id);
-        jFolder.put("group_id", folder.groupId);
+        jFolder.put("group_id", folder.groupId == null ? null : folder.groupId.toString());
         if (folder.added != null) {
             jFolder.put("added", DateUtils.formatMendeleyApiTimestamp(folder.added));
         }
@@ -498,13 +495,13 @@ public class JsonParser {
             final String key = reader.nextName();
 
             if (key.equals("id")) {
-                builder.setId(reader.nextString());
+                builder.setId(UUID.fromString(reader.nextString()));
 
             } else if (key.equals("created")) {
                 builder.setCreated(DateUtils.parseMendeleyApiTimestamp(reader.nextString()));
 
             } else if (key.equals("owning_profile_id")) {
-                builder.setOwningProfileId(reader.nextString());
+                builder.setOwningProfileId(UUID.fromString(reader.nextString()));
 
             } else if (key.equals("link")) {
                 builder.setLink(reader.nextString());
@@ -563,13 +560,13 @@ public class JsonParser {
             final String key = reader.nextName();
 
             if (key.equals("id")) {
-                builder.setId(reader.nextString());
+                builder.setId(UUID.fromString(reader.nextString()));
 
             } else if (key.equals("type")) {
                 builder.setType(Annotation.Type.fromName(reader.nextString()));
 
             } else if (key.equals("previous_id")) {
-                builder.setPreviousId(reader.nextString());
+                builder.setPreviousId(UUID.fromString(reader.nextString()));
 
             } else if (key.equals("color")) {
                 builder.setColor(colorFromJson(reader));
@@ -578,7 +575,7 @@ public class JsonParser {
                 builder.setText(reader.nextString());
 
             } else if (key.equals("profile_id")) {
-                builder.setProfileId(reader.nextString());
+                builder.setProfileId(UUID.fromString(reader.nextString()));
 
             } else if (key.equals("positions")) {
                 builder.setPositions(positionsFromJson(reader));
@@ -596,7 +593,7 @@ public class JsonParser {
                 builder.setFileHash(reader.nextString());
 
             } else if (key.equals("document_id")) {
-                builder.setDocumentId(reader.nextString());
+                builder.setDocumentId(UUID.fromString(reader.nextString()));
             } else {
                 reader.skipValue();
             }
@@ -609,16 +606,16 @@ public class JsonParser {
     public static JSONObject annotationToJson(Annotation annotation) throws JSONException {
         JSONObject jAnnotation = new JSONObject();
 
-        jAnnotation.put("id", annotation.id);
+        jAnnotation.put("id", annotation.id == null ? null : annotation.id.toString());
         if (annotation.type != null) {
             jAnnotation.put("type", annotation.type.name);
         }
-        jAnnotation.put("previous_id", annotation.previousId);
+        jAnnotation.put("previous_id", annotation.previousId == null ? null : annotation.previousId.toString());
         if (annotation.color != null) {
             jAnnotation.put("color", colorToJson(annotation.color));
         }
         jAnnotation.put("text", annotation.text);
-        jAnnotation.put("profile_id", annotation.profileId);
+        jAnnotation.put("profile_id", annotation.profileId == null ? null : annotation.profileId.toString());
 
         if (!annotation.positions.isNull()) {
             JSONArray positions = new JSONArray();
@@ -639,7 +636,7 @@ public class JsonParser {
             jAnnotation.put("privacy_level", annotation.privacyLevel.name);
         }
         jAnnotation.put("filehash", annotation.fileHash);
-        jAnnotation.put("document_id", annotation.documentId);
+        jAnnotation.put("document_id", annotation.documentId.toString());
 
         return jAnnotation;
     }
@@ -664,10 +661,10 @@ public class JsonParser {
             final String key = reader.nextName();
 
             if (key.equals("id")) {
-                bld.setId(reader.nextString());
+                bld.setId(UUID.fromString(reader.nextString()));
 
             } else if (key.equals("file_id")) {
-                bld.setFileId(reader.nextString());
+                bld.setFileId(UUID.fromString(reader.nextString()));
 
             } else if (key.equals("page")) {
                 bld.setPage(reader.nextInt());
@@ -691,7 +688,7 @@ public class JsonParser {
         JSONObject jsonObject = new JSONObject();
 
         jsonObject.put("id", readPosition.id);
-        jsonObject.put("file_id", readPosition.fileId);
+        jsonObject.put("file_id", readPosition.fileId.toString());
         jsonObject.put("page", readPosition.page);
         jsonObject.put("vertical_position", readPosition.verticalPosition);
         jsonObject.put("date", DateUtils.formatMendeleyApiTimestamp(readPosition.date));
@@ -944,7 +941,7 @@ public class JsonParser {
             final String key = reader.nextName();
 
             if (key.equals("id")) {
-                builder.setId(reader.nextString());
+                builder.setId(UUID.fromString(reader.nextString()));
 
             } else if (key.equals("institution")) {
                 builder.setInstitution(reader.nextString());
@@ -996,7 +993,7 @@ public class JsonParser {
         while (reader.hasNext()) {
             final String key = reader.nextName();
             if (key.equals("id")) {
-                builder.setId(reader.nextString());
+                builder.setId(UUID.fromString(reader.nextString()));
             } else if (key.equals("degree")) {
                 builder.setDegree(reader.nextString());
             } else if (key.equals("institution")) {
@@ -1036,7 +1033,7 @@ public class JsonParser {
             final String key = reader.nextName();
 
             if (key.equals("profile_id")) {
-                mendeleyUserRole.setProfileId(reader.nextString());
+                mendeleyUserRole.setProfileId(UUID.fromString(reader.nextString()));
             } else if (key.equals("joined")) {
                 mendeleyUserRole.setJoined(reader.nextString());
             } else if (key.equals("role")) {

@@ -3,6 +3,7 @@ package com.mendeley.sdk.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Model class representing Group json object.
@@ -64,9 +65,9 @@ public class Group {
         }
     }
 
-    public final String id;
+    public final UUID id;
     public final Date created;
-    public final String owningProfileId;
+    public final UUID owningProfileId;
     public final String link;
     public final Role role;
     public final AccessLevel accessLevel;
@@ -78,9 +79,9 @@ public class Group {
     public final Photo photo;
 
     private Group(
-            String id,
+            UUID id,
             Date created,
-            String owningProfileId,
+            UUID owningProfileId,
             String link,
             Role role,
             AccessLevel accessLevel,
@@ -105,9 +106,9 @@ public class Group {
     }
 
     public static class Builder {
-            private String id;
+            private UUID id;
             private Date created;
-            private String owningProfileId;
+            private UUID owningProfileId;
             private String link;
             private Role role;
             private AccessLevel accessLevel;
@@ -135,7 +136,7 @@ public class Group {
             this.photo = from.photo;
         }
 
-        public Builder setId(String id) {
+        public Builder setId(UUID id) {
             this.id = id;
             return this;
         }
@@ -145,7 +146,7 @@ public class Group {
             return this;
         }
 
-        public Builder setOwningProfileId(String owingProfileId) {
+        public Builder setOwningProfileId(UUID owingProfileId) {
             this.owningProfileId = owingProfileId;
             return this;
         }

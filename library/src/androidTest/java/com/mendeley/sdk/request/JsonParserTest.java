@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 public class JsonParserTest extends InstrumentationTestCase {
 
@@ -90,14 +91,14 @@ public class JsonParserTest extends InstrumentationTestCase {
         testDocument.setIdentifiers(identifiers);
 
         testDocument.setLastModified(DateUtils.parseMendeleyApiTimestamp("2014-02-28T11:52:30.000Z"));
-        testDocument.setGroupId("test-group_id");
-        testDocument.setProfileId("test-profile_id");
+        testDocument.setGroupId(UUID.fromString("97096000-0001-0000-0000-000000000000"));
+        testDocument.setProfileId(UUID.fromString("670211e0-0001-0000-0000-0000000000000"));
         testDocument.setRead(false);
         testDocument.setStarred(false);
         testDocument.setAuthored(false);
         testDocument.setConfirmed(false);
         testDocument.setHidden(false);
-        testDocument.setId("test-id");
+        testDocument.setId(UUID.fromString("d0c94e67-0001-0000-0000-000000000000"));
         testDocument.setMonth(0);
         testDocument.setYear(2014);
         testDocument.setDay(0);
@@ -117,7 +118,6 @@ public class JsonParserTest extends InstrumentationTestCase {
         testDocument.setFileAttached(false);
         testDocument.setFileAttached(false);
         testDocument.setClientData("test-client_data");
-        testDocument.setUniqueId("test-unique_id");
 
         return testDocument.build();
     }
@@ -127,9 +127,9 @@ public class JsonParserTest extends InstrumentationTestCase {
         Group.Builder testGroup = new Group.Builder();
         testGroup.setName("test-group-name");
         testGroup.setDescription("test-group-description");
-        testGroup.setId("test-group-id");
+        testGroup.setId(UUID.fromString("97096000-0001-0000-0000-000000000000"));
         testGroup.setCreated(DateUtils.parseMendeleyApiTimestamp("2014-07-29T11:22:55.000Z"));
-        testGroup.setOwningProfileId("test-group-owing-profile-id");
+        testGroup.setOwningProfileId(UUID.fromString("670211e0-0001-0000-0000-000000000000"));
         testGroup.setAccessLevel(Group.AccessLevel.PUBLIC);
         testGroup.setRole(Group.Role.OWNER);
         testGroup.setWebpage("test-group-webpage");
@@ -146,7 +146,7 @@ public class JsonParserTest extends InstrumentationTestCase {
     private UserRole getTestUserRole() {
 
         UserRole.Builder testUserRole = new UserRole.Builder();
-        testUserRole.setProfileId("test-user-role-id");
+        testUserRole.setProfileId(UUID.fromString("670211e0-0001-0000-0000-000000000000"));
         testUserRole.setJoined("2014-07-29T11:22:55.000Z");
         testUserRole.setRole("owner");
 
@@ -156,7 +156,7 @@ public class JsonParserTest extends InstrumentationTestCase {
     private Folder getTestFolder() throws ParseException {
 		Folder.Builder mendeleyFolder = new Folder.Builder();
         mendeleyFolder.setName("test-name");
-		mendeleyFolder.setId("test-id");
+		mendeleyFolder.setId(UUID.fromString("201de700-0001-0000-0000-000000000000"));
 		mendeleyFolder.setAdded(DateUtils.parseMendeleyApiTimestamp("2014-02-20T16:53:25.000Z"));
 	    
 	    return mendeleyFolder.build();
@@ -164,8 +164,8 @@ public class JsonParserTest extends InstrumentationTestCase {
 
     private File getTestFile() {
 	    File.Builder testFile = new File.Builder();
-	    testFile.setId("test-id");
-	    testFile.setDocumentId("test-document_id");
+	    testFile.setId(UUID.fromString("211e0000-0001-0000-0000-000000000000"));
+	    testFile.setDocumentId(UUID.fromString("d0c94e67-0001-0000-0000-000000000000"));
 	    testFile.setMimeType("test-mime_type");
 	    testFile.setFileName("test-file_name");
 	    testFile.setFileHash("test-filehash");
@@ -182,7 +182,7 @@ public class JsonParserTest extends InstrumentationTestCase {
 		Education.Builder testEducation = new Education.Builder();
 
 		testEducation.
-                setId("ff316338-86b7-4363-9721-education").
+                setId(UUID.fromString("ed9ca710-0001-0000-0000-000000000000")).
                 setInstitution("test-education_institution").
                 setDegree("test-degree").
                 setStartDate("2014-12-22").
@@ -192,17 +192,17 @@ public class JsonParserTest extends InstrumentationTestCase {
         Employment.Builder testEmploymentBuilder = new Employment.Builder();
 
         testEmploymentBuilder.
-                setId("ff316338-86b7-4363-9721-employment").
-                setInstitution("test-employment_institution").
-                setPosition("test-position").
-                setStartDate("2014-12-22").
-                setEndDate("2014-12-22").
-                setWebsite("www.test.employment.website").
-                setClasses(Arrays.asList("Psychology", "Violin")).
-                setIsMainEmployment(true);
-		
-		Profile.Builder testProfile = new Profile.Builder();
-		testProfile.setId("test-id");
+                setId(UUID.fromString("e461094e-0001-0000-0000-000000000000")).
+                        setInstitution("test-employment_institution").
+                        setPosition("test-position").
+                        setStartDate("2014-12-22").
+                        setEndDate("2014-12-22").
+                        setWebsite("www.test.employment.website").
+                        setClasses(Arrays.asList("Psychology", "Violin")).
+                        setIsMainEmployment(true);
+
+        Profile.Builder testProfile = new Profile.Builder();
+		testProfile.setId(UUID.fromString("670211e0-0001-0000-0000-000000000000"));
 		testProfile.setFirstName("test-first_name");
 		testProfile.setLastName("test-last_name");
 		testProfile.setDisplayName("test-display_name");
@@ -237,19 +237,19 @@ public class JsonParserTest extends InstrumentationTestCase {
     private Annotation getTestAnnotation(ArrayList<Annotation.Position> positions, Integer color, Annotation.PrivacyLevel privacyLevel, Annotation.Type type) throws ParseException {
         Annotation.Builder bld = new Annotation.Builder();
 
-        bld.setId("test-id");
+        bld.setId(UUID.fromString("a6607a71-0001-0000-0000-000000000000"));
         bld.setText("test-text");
         bld.setPositions(positions);
         if (color != null) {
             bld.setColor(color);
         }
         bld.setCreated(DateUtils.parseMendeleyApiTimestamp("2014-02-20T16:53:25.000Z"));
-        bld.setDocumentId("test-doc-id");
+        bld.setDocumentId(UUID.fromString("d0c94e67-0001-0000-0000-000000000000"));
         bld.setFileHash("test-hash");
         bld.setLastModified(DateUtils.parseMendeleyApiTimestamp("2015-02-20T16:53:25.000Z"));
-        bld.setPreviousId("test-prev-id");
+        bld.setPreviousId(UUID.fromString("67e91095-0001-0000-0000-000000000000"));
         bld.setPrivacyLevel(privacyLevel);
-        bld.setProfileId("test-profile-id");
+        bld.setProfileId(UUID.fromString("670211e0-0001-0000-0000-000000000000"));
         bld.setType(type);
 
         return bld.build();
@@ -257,8 +257,8 @@ public class JsonParserTest extends InstrumentationTestCase {
 
     private ReadPosition getTestReadPosition() throws ParseException {
         return new ReadPosition.Builder()
-                .setId("id")
-                .setFileId("file_id")
+                .setId(UUID.fromString("7ead6051-0001-0000-0000-000000000000"))
+                .setFileId(UUID.fromString("211e0000-0001-0000-0000-000000000000"))
                 .setPage(69)
                 .setVerticalPosition(1969)
                 .setDate(DateUtils.parseMendeleyApiTimestamp("2014-02-20T16:53:25.000Z"))
@@ -492,8 +492,8 @@ public class JsonParserTest extends InstrumentationTestCase {
 	@SmallTest
 	public void test_jsonFromDocumentId()
 			throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, JSONException {
-    	String documentId = "test-document_id";
-    	String expectedString = "{\"id\":\"test-document_id\"}";
+    	UUID documentId = UUID.fromString("d0c94e67-0001-0000-0000-000000000000");
+    	String expectedString = "{\"id\":\"d0c94e67-0001-0000-0000-000000000000\"}";
 		
 		String actualString = JsonParser.documentIdToJson(documentId).toString();
 
@@ -506,12 +506,12 @@ public class JsonParserTest extends InstrumentationTestCase {
 
         final JsonReader reader = getJsonReaderFromAssetsFile(documentIdsFile);
 
-		List<String> expectedList = new ArrayList<String>();
-        expectedList.add("test-document_id_1");
-        expectedList.add("test-document_id_2");
-        expectedList.add("test-document_id_3");
+		List<UUID> expectedList = new ArrayList<>();
+        expectedList.add(UUID.fromString("d0c94e67-0001-0000-0000-000000000000"));
+        expectedList.add(UUID.fromString("d0c94e67-0002-0000-0000-000000000000"));
+        expectedList.add(UUID.fromString("d0c94e67-0003-0000-0000-000000000000"));
 		
-		final List<String> actualList = JsonParser.documentsIdsFromJson(reader);
+		final List<UUID> actualList = JsonParser.documentsIdsFromJson(reader);
 
         assertEquals("Wrong list size", expectedList.size(), actualList.size());
 		for (int i = 0; i < actualList.size(); i++) {
@@ -577,7 +577,7 @@ public class JsonParserTest extends InstrumentationTestCase {
     }
 
     @SmallTest
-    public void test_parseAnotation_withNullValues()
+    public void test_parseAnnotation_withNullValues()
             throws IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, JSONException, ParseException {
 
         // GIVEN the JSON representation of an annotation where its values (boxes, color) are null

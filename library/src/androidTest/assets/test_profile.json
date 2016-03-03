@@ -1,5 +1,5 @@
 {
-  "id": "test-id",
+  "id": "670211e0-0001-0000-0000-000000000000",
   "first_name": "test-first_name",
   "last_name": "test-last_name",
   "display_name": "test-display_name",
@@ -21,7 +21,7 @@
   "created_at": "2014-04-28T15:37:51.000Z",
   "education": [
     {
-      "id": "ff316338-86b7-4363-9721-education",
+      "id": "ed9ca710-0001-0000-0000-000000000000",
       "institution": "test-education_institution",
       "institution_details": {
         "name": "test-education_institution",
@@ -39,7 +39,7 @@
   ],
   "employment": [
     {
-      "id": "ff316338-86b7-4363-9721-employment",
+      "id": "e461094e-0001-0000-0000-000000000000",
       "institution": "test-employment_institution",
       "institution_details": {
         "name": "test-employment_institution",

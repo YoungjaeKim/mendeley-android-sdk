@@ -24,6 +24,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -40,7 +41,7 @@ public class AnnotationsEndpoint {
     private static String ANNOTATIONS_CONTENT_TYPE = "application/vnd.mendeley-annotation.1+json";
 
     public static class GetAnnotationRequest extends GetAuthorizedRequest<Annotation> {
-        public GetAnnotationRequest(String annotationId, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
+        public GetAnnotationRequest(UUID annotationId, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
             super(Uri.parse(ANNOTATIONS_BASE_URL + "/" + annotationId), authTokenManager, appCredentials);
         }
 
@@ -107,12 +108,12 @@ public class AnnotationsEndpoint {
     public static class PatchAnnotationRequest extends PatchAuthorizedRequest<Annotation> {
         private final Annotation annotation;
 
-        public PatchAnnotationRequest(String annotationId, Annotation annotation, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
+        public PatchAnnotationRequest(UUID annotationId, Annotation annotation, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
             super(getUrl(annotationId), null, authTokenManager, appCredentials);
             this.annotation = annotation;
         }
 
-        private static Uri getUrl(String annotationId) {
+        private static Uri getUrl(UUID annotationId) {
             return Uri.parse(ANNOTATIONS_BASE_URL + "/" + annotationId);
         }
 
@@ -130,7 +131,7 @@ public class AnnotationsEndpoint {
     }
 
     public static class DeleteAnnotationRequest extends DeleteAuthorizedRequest<Void> {
-        public DeleteAnnotationRequest(String annotationId, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
+        public DeleteAnnotationRequest(UUID annotationId, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
             super(Uri.parse(ANNOTATIONS_BASE_URL + "/" + annotationId), authTokenManager, appCredentials);
         }
     }
@@ -141,9 +142,9 @@ public class AnnotationsEndpoint {
      * Uninitialised properties will be ignored.
      */
     public static class AnnotationRequestParameters {
-        public String documentId;
+        public UUID documentId;
 
-        public String groupId;
+        public UUID groupId;
 
         public Boolean includeTrashed;
 
@@ -168,10 +169,10 @@ public class AnnotationsEndpoint {
 
 
             if (documentId != null) {
-                bld.appendQueryParameter("document_id", documentId);
+                bld.appendQueryParameter("document_id", documentId.toString());
             }
             if (groupId != null) {
-                bld.appendQueryParameter("group_id", groupId);
+                bld.appendQueryParameter("group_id", groupId.toString());
             }
             if (includeTrashed != null) {
                 bld.appendQueryParameter("include_trashed", String.valueOf(includeTrashed));

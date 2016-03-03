@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 public class GroupRequestTest extends SignedInTest {
 
@@ -22,9 +23,9 @@ public class GroupRequestTest extends SignedInTest {
             "Technology of Music"
     };
 
-    private static final String[] PROFILE_IDS = {
-            "87777129-2222-3800-9e1c-fa76c68201d7",
-            "f38dc0c8-df12-32a0-ae70-28ab4f3409cd"
+    private static final UUID[] PROFILE_IDS = {
+            UUID.fromString("87777129-2222-3800-9e1c-fa76c68201d7"),
+            UUID.fromString("f38dc0c8-df12-32a0-ae70-28ab4f3409cd")
     };
 
     /**
@@ -66,10 +67,10 @@ public class GroupRequestTest extends SignedInTest {
     @SmallTest
     public void test_getGroup_usesRightUrl() throws Exception {
 
-        final String groupId = "groupId";
+        final UUID groupId = UUID.fromString("97096000-0001-0000-0000-000000000000");
         Uri expectedUrl = Uri.parse(Request.MENDELEY_API_BASE_URL).buildUpon().
                 appendPath("groups").
-                appendPath(groupId).
+                appendPath(groupId.toString()).
                 build();
 
         Uri actual = getRequestFactory().newGetGroupRequest(groupId).getUrl();
@@ -80,12 +81,12 @@ public class GroupRequestTest extends SignedInTest {
     @SmallTest
     public void test_getGroupMembers_usesRightUrl() throws Exception {
 
-        final String groupId = "groupId";
+        final UUID groupId = UUID.fromString("97096000-0001-0000-0000-000000000000");
         final int limit = 30;
 
         Uri expectedUrl = Uri.parse(Request.MENDELEY_API_BASE_URL).buildUpon().
                 appendPath("groups").
-                appendPath(groupId).
+                appendPath(groupId.toString()).
                 appendPath("members").
                 appendQueryParameter("limit", String.valueOf(limit)).
                 build();
@@ -184,7 +185,7 @@ public class GroupRequestTest extends SignedInTest {
 
         // AND members of this group
         List<UserRole> expected = new LinkedList<UserRole>();
-        for (String profileId : PROFILE_IDS) {
+        for (UUID profileId : PROFILE_IDS) {
             expected.add(new UserRole.Builder().setProfileId(profileId).build());
         }
 

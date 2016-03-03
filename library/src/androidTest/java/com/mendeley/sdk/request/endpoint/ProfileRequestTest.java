@@ -4,6 +4,8 @@ import com.mendeley.sdk.model.Profile;
 import com.mendeley.sdk.request.SignedInTest;
 import com.mendeley.sdk.testUtils.AssertUtils;
 
+import java.util.UUID;
+
 public class ProfileRequestTest extends SignedInTest {
 
     /**
@@ -36,7 +38,7 @@ public class ProfileRequestTest extends SignedInTest {
 
     private Profile createTestProfile() {
         Profile profile = new Profile.Builder()
-                .setId("f38dc0c8-df12-32a0-ae70-28ab4f3409cd")
+                .setId(UUID.fromString("f38dc0c8-df12-32a0-ae70-28ab4f3409cd"))
                 .setFirstName("Mobile")
                 .setLastName("Android")
                 .build();

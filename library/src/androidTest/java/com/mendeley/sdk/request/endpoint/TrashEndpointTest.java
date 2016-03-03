@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 public class TrashEndpointTest extends SignedInTest {
 
@@ -29,7 +30,7 @@ public class TrashEndpointTest extends SignedInTest {
     @SmallTest
     public void test_getTrashDocuments_useTheRightUrl_withParams() throws ParseException {
         DocumentEndpoint.DocumentRequestParameters.View view = DocumentEndpoint.DocumentRequestParameters.View.ALL;
-        String groupId = "test-group_id";
+        UUID groupId = UUID.fromString("97096000-0001-0000-0000-000000000000");
         Date modifiedSince = DateUtils.parseMendeleyApiTimestamp("2014-02-28T11:52:30.000Z");
         Date deletedSince = DateUtils.parseMendeleyApiTimestamp("2014-01-21T11:52:30.000Z");
         int limit = 7;
@@ -39,7 +40,7 @@ public class TrashEndpointTest extends SignedInTest {
         final Uri expectedUrl = Uri.parse(Request.MENDELEY_API_BASE_URL).buildUpon()
                 .appendPath("trash")
                 .appendQueryParameter("view", view.getValue())
-                .appendQueryParameter("group_id", groupId)
+                .appendQueryParameter("group_id", groupId.toString())
                 .appendQueryParameter("modified_since", DateUtils.formatMendeleyApiTimestamp(modifiedSince))
                 .appendQueryParameter("limit", String.valueOf(limit))
                 .appendQueryParameter("order", order.getValue())
@@ -86,9 +87,9 @@ public class TrashEndpointTest extends SignedInTest {
 
     @SmallTest
     public void test_deleteTrashDocument_useTheRightUrl() {
-        final String docId = "theDocId";
+        final UUID docId = UUID.fromString("d0c94e67-0001-0000-0000-000000000000");
 
-        final Uri expectedUrl = Uri.parse(Request.MENDELEY_API_BASE_URL).buildUpon().appendPath("trash").appendPath(docId).build();
+        final Uri expectedUrl = Uri.parse(Request.MENDELEY_API_BASE_URL).buildUpon().appendPath("trash").appendPath(docId.toString()).build();
         final Uri actual = getRequestFactory().newDeleteTrashedDocumentRequest(docId).getUrl();
 
         assertEquals("Request url is wrong", expectedUrl, actual);
@@ -119,9 +120,9 @@ public class TrashEndpointTest extends SignedInTest {
 
     @SmallTest
     public void test_restoreTrashedDocument_useTheRightUrl() {
-        final String docId = "theDocId";
+        final UUID docId = UUID.fromString("d0c94e67-0001-0000-0000-000000000000");
 
-        final Uri expectedUrl = Uri.parse(Request.MENDELEY_API_BASE_URL).buildUpon().appendPath("trash").appendPath(docId).appendPath("restore").build();
+        final Uri expectedUrl = Uri.parse(Request.MENDELEY_API_BASE_URL).buildUpon().appendPath("trash").appendPath(docId.toString()).appendPath("restore").build();
         final Uri actual = getRequestFactory().newRestoreTrashedDocumentRequest(docId).getUrl();
 
         assertEquals("Request url is wrong", expectedUrl, actual);

@@ -1,20 +1,22 @@
 package com.mendeley.sdk.model;
 
+import java.util.UUID;
+
 /**
  * Model class representing file json object.
  *
  */
 public class File {
 
-    public final String id;
-    public final String documentId;
+    public final UUID id;
+    public final UUID documentId;
     public final String mimeType;
     public final String fileName;
     public final String fileHash;
     /** Size of file in bytes */
     public final int fileSize;
 
-    private File(String id, String documentId, String mimeType, String fileName, String fileHash, int fileSize) {
+    private File(UUID id, UUID documentId, String mimeType, String fileName, String fileHash, int fileSize) {
         this.id = id;
         this.documentId = documentId;
         this.mimeType = mimeType;
@@ -52,8 +54,8 @@ public class File {
     }
 
     public static class Builder {
-        private String id;
-        private String documentId;
+        private UUID id;
+        private UUID documentId;
         private String mimeType;
         private String fileName;
         private String fileHash;
@@ -61,12 +63,12 @@ public class File {
 
         public Builder() {}
 
-        public Builder setId(String id) {
+        public Builder setId(UUID id) {
             this.id = id;
             return this;
         }
 
-        public Builder setDocumentId(String documentId) {
+        public Builder setDocumentId(UUID documentId) {
             this.documentId = documentId;
             return this;
         }

@@ -22,6 +22,7 @@ import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -64,7 +65,7 @@ public class FoldersEndpoint {
     }
 
     public static class GetFolderRequest extends GetAuthorizedRequest<Folder> {
-        public GetFolderRequest(String folderId, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
+        public GetFolderRequest(UUID folderId, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
             super(Uri.parse(FOLDERS_BASE_URL + "/" + folderId), authTokenManager, appCredentials);
         }
 
@@ -98,13 +99,12 @@ public class FoldersEndpoint {
             final JsonReader reader = new JsonReader(new InputStreamReader(is));
             return JsonParser.folderFromJson(reader);
         }
-
     }
 
     public static class PatchFolderAuthorizedRequest extends PatchAuthorizedRequest<Folder> {
         private final Folder folder;
 
-        public PatchFolderAuthorizedRequest(String folderId, Folder folder, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
+        public PatchFolderAuthorizedRequest(UUID folderId, Folder folder, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
             super(Uri.parse(FOLDERS_BASE_URL + "/" + folderId), null, authTokenManager, appCredentials);
             this.folder = folder;
         }
@@ -122,10 +122,10 @@ public class FoldersEndpoint {
     }
 
     public static class PostDocumentToFolderRequest extends PostAuthorizedRequest<Void> {
-        private final String documentId;
+        private final UUID documentId;
 
-        public PostDocumentToFolderRequest(String folderId, String documentId, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
-            super(Uri.parse(FOLDERS_BASE_URL).buildUpon().appendPath(folderId).appendPath("documents").build(), authTokenManager, appCredentials);
+        public PostDocumentToFolderRequest(UUID folderId, UUID documentId, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
+            super(Uri.parse(FOLDERS_BASE_URL).buildUpon().appendPath(folderId.toString()).appendPath("documents").build(), authTokenManager, appCredentials);
             this.documentId = documentId;
         }
 
@@ -138,13 +138,12 @@ public class FoldersEndpoint {
         protected RequestBody getBody() throws JSONException {
             return RequestBody.create(MediaType.parse(DocumentEndpoint.DOCUMENTS_CONTENT_TYPE), JsonParser.documentIdToJson(documentId).toString());
         }
-
     }
 
-    public static class GetFolderDocumentIdsRequest extends GetAuthorizedRequest<List<String>> {
+    public static class GetFolderDocumentIdsRequest extends GetAuthorizedRequest<List<UUID>> {
 
-        private static Uri getGetFolderDocumentIdsUrl(FolderRequestParameters params, String folderId) {
-            Uri uri = Uri.parse(FOLDERS_BASE_URL).buildUpon().appendPath(folderId).appendPath("documents").build();
+        private static Uri getGetFolderDocumentIdsUrl(FolderRequestParameters params, UUID folderId) {
+            Uri uri = Uri.parse(FOLDERS_BASE_URL).buildUpon().appendPath(folderId.toString()).appendPath("documents").build();
             return params != null ? params.appendToUi(uri) : uri;
         }
 
@@ -152,12 +151,12 @@ public class FoldersEndpoint {
             super(url, authTokenManager, appCredentials);
         }
 
-        public GetFolderDocumentIdsRequest(FolderRequestParameters parameters, String folderId, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
+        public GetFolderDocumentIdsRequest(FolderRequestParameters parameters, UUID folderId, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
             this(getGetFolderDocumentIdsUrl(parameters, folderId), authTokenManager, appCredentials);
         }
 
         @Override
-        protected List<String> manageResponse(InputStream is) throws JSONException, IOException {
+        protected List<UUID> manageResponse(InputStream is) throws JSONException, IOException {
             final JsonReader reader = new JsonReader(new InputStreamReader(new BufferedInputStream(is)));
             return JsonParser.documentsIdsFromJson(reader);
         }
@@ -169,14 +168,14 @@ public class FoldersEndpoint {
     }
 
     public static class DeleteFolderRequest extends DeleteAuthorizedRequest<Void> {
-        public DeleteFolderRequest(String folderId, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
-            super(Uri.parse(FOLDERS_BASE_URL).buildUpon().appendPath(folderId).build(), authTokenManager, appCredentials);
+        public DeleteFolderRequest(UUID folderId, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
+            super(Uri.parse(FOLDERS_BASE_URL).buildUpon().appendPath(folderId.toString()).build(), authTokenManager, appCredentials);
         }
     }
 
     public static class DeleteDocumentFromFolder extends DeleteAuthorizedRequest<Void> {
-        public DeleteDocumentFromFolder(String folderId, String documentId, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
-            super(Uri.parse(FOLDERS_BASE_URL).buildUpon().appendPath(folderId).appendPath("documents").appendPath(documentId).build(), authTokenManager, appCredentials);
+        public DeleteDocumentFromFolder(UUID folderId, UUID documentId, AuthTokenManager authTokenManager, AppCredentials appCredentials) {
+            super(Uri.parse(FOLDERS_BASE_URL).buildUpon().appendPath(folderId.toString()).appendPath("documents").appendPath(documentId.toString()).build(), authTokenManager, appCredentials);
         }
     }
 
@@ -189,7 +188,7 @@ public class FoldersEndpoint {
         /**
          * Group ID. If not supplied, returns user folders.
          */
-        public String groupId;
+        public UUID groupId;
 
         /**
          * The maximum number of items on the page. If not supplied, the default is 20. The largest allowable value is 500.
@@ -201,7 +200,7 @@ public class FoldersEndpoint {
             final Uri.Builder bld = uri.buildUpon();
 
             if (groupId != null) {
-                bld.appendQueryParameter("group_id", groupId);
+                bld.appendQueryParameter("group_id", groupId.toString());
             }
             if (limit != null) {
                 bld.appendQueryParameter("limit", Integer.toString(limit));

@@ -1,12 +1,12 @@
 [
   {
-    "id": "test-document_id_1"
+    "id": "d0c94e67-0001-0000-0000-000000000000"
   },
   {
-    "id": "test-document_id_2"
+    "id": "d0c94e67-0002-0000-0000-000000000000"
   },
   {
-    "id": "test-document_id_3",
+    "id": "d0c94e67-0003-0000-0000-000000000000",
     "unexpected_attribute": "void"
   }
 ]
